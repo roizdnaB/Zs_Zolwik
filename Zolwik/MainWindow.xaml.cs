@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,19 @@ namespace Zolwik
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+        }
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
+        }
+
+        private void Save_As_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.ShowDialog();
         }
     }
 }

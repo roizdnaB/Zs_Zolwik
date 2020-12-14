@@ -6,7 +6,7 @@
         xmlns:ts="clr-namespace:TurtleSharp.WPF;assembly=TurtleSharp.WPF"
         xmlns:local="clr-namespace:Zolwik"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Zolwik" Height="450" Width="800">
     <Grid Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -21,9 +21,9 @@
             <Menu DockPanel.Dock="Top" Background="LightGray" BorderThickness="1" BorderBrush="Black">
                 <MenuItem Header="_File">
                     <MenuItem Header="_New" />
-                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Open" Click="Open_Click"/>
                     <MenuItem Header="_Save" />
-                    <MenuItem Header="_Save As"/>
+                    <MenuItem Header="_Save As" Click="Save_As_Click"/>
                     <Separator />
                     <MenuItem Header="_Exit" />
                 </MenuItem>
