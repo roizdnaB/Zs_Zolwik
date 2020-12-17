@@ -28,7 +28,7 @@
 
         <db:OpenFileDialogBox
             x:Name="LoadFile"
-            Filter="Text Files (*.txt) |*.*"
+            Filter="Text Files txt files (*.txt)|*.txt"
             CommandFileOk="{Binding LoadTextFromFile}"
             DefaultExtension="txt"
             FilterIndex="0"/>
