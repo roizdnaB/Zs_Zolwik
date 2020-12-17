@@ -14,6 +14,8 @@ namespace Zolwik.ViewModels
         private string _text = String.Empty;
         public string Text { get => _text; set { _text = value; OnPropertyChanged(nameof(Text)); } }
         public RelayCommand LoadTextFromFile { get; private set; }
+        public RelayCommand SaveTextFromFile { get; private set; }
+
 
         private void _loadTextFromFileCommand(object path)
         {
@@ -24,9 +26,18 @@ namespace Zolwik.ViewModels
                 Text = File.ReadAllText(FilePath);
             }
         }
+
+        private void _saveTextFromFileCommand(object path)
+        {
+            string FilePath = path as string;
+
+            File.WriteAllText(FilePath,Text);
+        }
         public MenuVM()
         {
             LoadTextFromFile = new RelayCommand(arg => _loadTextFromFileCommand(arg));
+            SaveTextFromFile = new RelayCommand(arg => _saveTextFromFileCommand(arg));
+
         }
     }
 

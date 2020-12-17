@@ -33,20 +33,38 @@
             DefaultExtension="txt"
             FilterIndex="0"/>
 
+        <db:SaveFileDialogBox
+            x:Name="SaveFile"
+            Filter="Text Files txt files (*.txt)|*.txt"
+            CommandFileOk="{Binding SaveTextFromFile}"
+            DefaultExtension="txt"
+            FilterIndex="0"/>
+
         <DockPanel Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top" Background="LightGray" BorderThickness="1" BorderBrush="Black">
-                <MenuItem Header="_File">
+                <MenuItem Header="_Script">
                     <MenuItem Header="_New" />
                     <MenuItem Header="_Open" Command ="{ Binding ElementName=LoadFile, Path=Show}"/>
-                    <MenuItem Header="_Save" />
-                    <MenuItem Header="_Save As" />
+                    <MenuItem Header="_Save" Command ="{ Binding ElementName=SaveFile, Path=Show}" />
+                    <MenuItem Header="_Save As"/>
                     <Separator />
-                    <MenuItem Header="_Exit" />
+                    <MenuItem Header="_Edit">
+                        <MenuItem Header="_Copy"/>
+                        <MenuItem Header="_Paste"/>
+                        <MenuItem Header="_Cut"/>
+                    </MenuItem>
                 </MenuItem>
-                <MenuItem Header="_Edit">
-                    <MenuItem Header="_Copy"/>
-                    <MenuItem Header="_Paste"/>
-                    <MenuItem Header="_Cut"/>
+                <MenuItem Header="_Image">
+                    <MenuItem Header="_New"/>
+                    <MenuItem Header="_Open"/>
+                    <MenuItem Header="_Save" />
+                    <MenuItem Header="_Save As"/>
+                    <Separator />
+                    <MenuItem Header="_Edit">
+                        <MenuItem Header="_Copy"/>
+                        <MenuItem Header="_Paste"/>
+                        <MenuItem Header="_Cut"/>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_Settings">
                 </MenuItem>
