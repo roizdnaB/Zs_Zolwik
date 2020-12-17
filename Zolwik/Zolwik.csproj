@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MVVM\MVVM.csproj" />
     <ProjectReference Include="..\TurtleSharp.WPF\TurtleSharp.WPF.csproj" />
     <ProjectReference Include="..\TurtleSharp\TurtleSharp.csproj" />
   </ItemGroup>

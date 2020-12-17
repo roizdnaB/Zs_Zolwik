@@ -25,17 +25,5 @@ namespace Zolwik
         {
             InitializeComponent(); 
         }
-
-        private void Open_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.ShowDialog();
-        }
-
-        private void Save_As_Click(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.ShowDialog();
-        }
     }
 }
