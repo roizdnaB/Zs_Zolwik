@@ -9,6 +9,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:db="clr-namespace:Zolwik.DialogBoxes"
+        xmlns:resx="clr-namespace:Zolwik.Zasoby"
         mc:Ignorable="d"
         Title="{x:Static resx:Resource.title}" Height="450" Width="800">
     <Window.DataContext>
