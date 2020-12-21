@@ -9,12 +9,12 @@ using TurtleSharp;
 
 namespace Zolwik.Compiler
 {
-    public static class TurtleCommandsCompiler
+    public class TurtleCommandsCompiler: ITurtleCommandsCompiler
     {
-        static string[] References;
-        static CompilerParameters Options = new CompilerParameters();
-        static CSharpCodeProvider Compiler = new CSharpCodeProvider();
-        static string ScriptPrefix =
+        string[] References;
+        CompilerParameters Options = new CompilerParameters();
+        CSharpCodeProvider Compiler = new CSharpCodeProvider();
+        string ScriptPrefix =
             "using System;" +
             "using TurtleSharp;" +
             "" +
@@ -22,12 +22,12 @@ namespace Zolwik.Compiler
             "{" +
             "   public static class GeneratedClass {" +
             "       public static void GeneratedMethod(Turtle Turtle, ITurtlePresentation Canvas) {\n";
-        static string ScriptPostfix =
+        string ScriptPostfix =
             "       }" +
             "   }" +
             "}";
 
-        static TurtleCommandsCompiler()
+        public TurtleCommandsCompiler()
         {
             References = new string[]
             {
@@ -43,7 +43,7 @@ namespace Zolwik.Compiler
             Options.ReferencedAssemblies.AddRange(References);
         }
 
-        public static Action<Turtle, ITurtlePresentation> compileTurtleCommands(string script)
+        public Action<Turtle, ITurtlePresentation> CompileTurtleCommands(string script)
         {
             var compiled = Compiler.CompileAssemblyFromSource(Options, ComposeSource(script));
 
@@ -63,6 +63,6 @@ namespace Zolwik.Compiler
             return method.CreateDelegate(typeof(Action<Turtle, ITurtlePresentation>)) as Action<Turtle, ITurtlePresentation>;
         }
 
-        static string ComposeSource(string script) => string.Concat(ScriptPrefix, script, ScriptPostfix);
+        string ComposeSource(string script) => string.Concat(ScriptPrefix, script, ScriptPostfix);
     }
 }
