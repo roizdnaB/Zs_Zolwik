@@ -1,39 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 
 namespace Zolwik.DialogBoxes
 {
-    class MessageDialogBox : CommandDialogBox
+    internal class MessageDialogBox : CommandDialogBox
     {
         #region Własności zależności i ich rejestracje
 
         // Polecenie, gdy wybrano odpowiedź MessageBoxResult.Yes
         protected static readonly DependencyProperty commandYesProperty =
             DependencyProperty.Register("CommandYes", typeof(ICommand), typeof(MessageDialogBox));
+
         // Polecenie, gdy wybrano odpowiedź MessageBoxResult.No
         protected static readonly DependencyProperty commandNoProperty =
             DependencyProperty.Register("CommandNo", typeof(ICommand), typeof(MessageDialogBox));
+
         // Polecenie, gdy wybrano odpowiedź MessageBoxResult.Cancel
         protected static readonly DependencyProperty commandCancelProperty =
             DependencyProperty.Register("CommandCancel", typeof(ICommand), typeof(MessageDialogBox));
+
         // Polecenie, gdy wybrano odpowiedź MessageBoxResult.OK
         protected static readonly DependencyProperty commandOKProperty =
             DependencyProperty.Register("CommandOK", typeof(ICommand), typeof(MessageDialogBox));
+
         // Czy okno ma zostać wyświetlone
         public static DependencyProperty IsMessageDialogShowProperty =
             DependencyProperty.Register("IsMessageDialogShow", typeof(bool), typeof(MessageDialogBox));
 
-        #endregion
+        #endregion Własności zależności i ich rejestracje
 
         #region Własności publiczne
 
         // W tej własności będzie zapisywana wartość zwracana przez metodę MessageBox.Show
         public MessageBoxResult? LastResult { get; protected set; }
+
         // Jakie przyciski ma mieć okno
         public MessageBoxButton Buttons { get; set; } = MessageBoxButton.OK;
+
         // Jaką ikonę ma mieć okno
         public MessageBoxImage Icon { get; set; } = MessageBoxImage.None;
 
@@ -44,9 +47,9 @@ namespace Zolwik.DialogBoxes
             set { SetValue(IsMessageDialogShowProperty, value); }
         }
 
-        // W przypadku, gdy okno nie zostanie wyświetlone 
-        // (Właściwość IsDialogBypassed ma wartość false), 
-        // to na podstawie poniższej właściowści będzie 
+        // W przypadku, gdy okno nie zostanie wyświetlone
+        // (Właściwość IsDialogBypassed ma wartość false),
+        // to na podstawie poniższej właściowści będzie
         // ustalana odpowiedź okna dialogowego
         public MessageBoxResult DialogBypassButton { get; set; } = MessageBoxResult.None;
 
@@ -91,7 +94,7 @@ namespace Zolwik.DialogBoxes
             }
         }
 
-        // Polecenia dla poszczególnych odpowiedzi z listy wyliczeniowej 
+        // Polecenia dla poszczególnych odpowiedzi z listy wyliczeniowej
         // MessageBoxResult
 
         public ICommand CommandYes
@@ -118,7 +121,7 @@ namespace Zolwik.DialogBoxes
             set { SetValue(commandOKProperty, value); }
         }
 
-        #endregion
+        #endregion Własności publiczne
 
         #region Konstruktor
 
@@ -131,7 +134,7 @@ namespace Zolwik.DialogBoxes
                 o => showMessageBox(o);
         }
 
-        #endregion
+        #endregion Konstruktor
 
         #region Metody pomocnicze
 
@@ -181,6 +184,6 @@ namespace Zolwik.DialogBoxes
             }
         }
 
-        #endregion
+        #endregion Metody pomocnicze
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using Zolwik.ViewModels;
@@ -22,7 +20,7 @@ namespace Zolwik.DialogBoxes
                 PropertyChanged(this, new PropertyChangedEventArgs(nazwaWlasnosci));
         }
 
-        #endregion
+        #endregion Implementacja interfejsu INotifyPropertyChanged
 
         #region Pola klasy
 
@@ -33,7 +31,7 @@ namespace Zolwik.DialogBoxes
         // Polecenie pokazania okna
         protected ICommand show;
 
-        #endregion
+        #endregion Pola klasy
 
         #region Własności zależności i ich rejestracje
 
@@ -53,7 +51,7 @@ namespace Zolwik.DialogBoxes
         protected static readonly DependencyProperty commandAfterProperty =
             DependencyProperty.Register("CommandAfter", typeof(ICommand), typeof(CommandDialogBox));
 
-        #endregion
+        #endregion Własności zależności i ich rejestracje
 
         #region Własności publiczne
 
@@ -96,7 +94,7 @@ namespace Zolwik.DialogBoxes
                         {
                             // Uruchom polecenie przed wyświetleniem okna
                             executeCommand(CommandBefore, CommandParameter);
-                            // Uruchom polecenie wyświetlające okno 
+                            // Uruchom polecenie wyświetlające okno
                             execute(o);
                             // Uruchom polecenie po zamknięciu okna
                             executeCommand(CommandAfter, CommandParameter);
@@ -107,7 +105,7 @@ namespace Zolwik.DialogBoxes
             }
         }
 
-        #endregion
+        #endregion Własności publiczne
 
         #region Metody pomocnicze
 
@@ -119,6 +117,6 @@ namespace Zolwik.DialogBoxes
                     command.Execute(commandParameter);
         }
 
-        #endregion
+        #endregion Metody pomocnicze
     }
 }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Zolwik.Compiler
+﻿namespace Zolwik.Compiler
 {
-    class RoslynTurtleCommandsCompiler
+    internal class RoslynTurtleCommandsCompiler
     {
     }
 }

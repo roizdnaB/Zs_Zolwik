@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace TurtleSharp.WPF
 {
     public partial class TurtleCanvas : Canvas, ITurtlePresentation
     {
-        private Rectangle _turtleRep;
+        private Polygon _turtleRep;
 
         public void Clear()
         {
@@ -29,17 +19,28 @@ namespace TurtleSharp.WPF
         //Place the turtle on the screen
         public void PlaceTurtle(Turtle turtle)
         {
-            //Set the repr as the Rectangle
-            _turtleRep = new Rectangle();
-            
-            //Set the parameters
-            _turtleRep.Width = 15;
-            _turtleRep.Height = 15;
+            _turtleRep = new Polygon();
+            _turtleRep.Fill = Brushes.Green;
 
-            //Set the color
-            _turtleRep.Fill = new SolidColorBrush(Colors.Green);
+            //Calculate the coords of the middle of the canvas
+            var xCenter = (200 / 2);
+            var yCenter = 200 / 2;
 
-            //Display the turtle
+            //Set the shape of the turtle
+            Point Point1 = new Point(xCenter - 10, yCenter - 10);
+            Point Point2 = new Point(xCenter + 10, yCenter - 10);
+            Point Point3 = new Point(xCenter + 10, yCenter + 10);
+            Point Point4 = new Point(xCenter - 10, yCenter + 10);
+
+            //Set the collection of points and add all points to the collection
+            PointCollection myPointCollection = new PointCollection();
+            myPointCollection.Add(Point1);
+            myPointCollection.Add(Point2);
+            myPointCollection.Add(Point3);
+            myPointCollection.Add(Point4);
+
+            //Show the turtle
+            _turtleRep.Points = myPointCollection;
             this.Children.Add(_turtleRep);
         }
 
@@ -53,7 +54,7 @@ namespace TurtleSharp.WPF
         public void ToggleTurtleVisibility(Turtle turtle)
         {
             //Just reverse the bool
-            turtle.IsVisible = !turtle.IsVisible;
+            turtle.IsVisible = turtle.IsVisible;
         }
 
         public void TurtleBackward(Turtle turtle, double distance)
@@ -68,7 +69,35 @@ namespace TurtleSharp.WPF
 
         public void TurtleForward(Turtle turtle, double distance)
         {
-            throw new NotImplementedException();
+            if (_turtleRep != null)
+            {
+                //Get the starting position of turtle
+                var lineStartX = _turtleRep.Points[0].X;
+                var lineStartY = _turtleRep.Points[0].Y + 10; // Plus 10 - a half of height of turtle
+
+                //Cannot use the foreach bc Points are IEnumerable
+                for (int i = 0; i < _turtleRep.Points.Count; i++)
+                {
+                    //Create a new Point and insert it in the place of old one
+                    Point point = _turtleRep.Points[i];
+                    point.X += distance;
+                    _turtleRep.Points[i] = point;
+                }
+
+                //Get the ending position of turtle
+                var lineEndX = _turtleRep.Points[0].X;
+                var lineEndY = _turtleRep.Points[0].Y + 10;
+
+                //Create a line
+                Polyline polyline = new Polyline();
+                polyline.StrokeThickness = turtle.PenSize;
+                polyline.Stroke = Brushes.Black;
+                polyline.Points.Add(new Point(lineStartX, lineStartY));
+                polyline.Points.Add(new Point(lineEndX, lineEndY));
+
+                //Show the line
+                this.Children.Add(polyline);
+            }
         }
 
         public void TurtleReset(Turtle turtle)
@@ -79,7 +108,7 @@ namespace TurtleSharp.WPF
             //Delete all drawings form Canvas
             //foreach (var child in this.Children)
             //{
-                //this.Children.Remove(child);
+            //this.Children.Remove(child);
             //}
         }
 

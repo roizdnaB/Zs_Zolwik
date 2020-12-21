@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace TurtleSharp
 {
@@ -47,10 +45,15 @@ namespace TurtleSharp
         }
 
         public void Forward(double distance) => Presentation?.TurtleForward(this, distance);
+
         public void Backward(double distance) => Presentation?.TurtleBackward(this, distance);
+
         public void Rotate(double degrees) => Presentation?.TurtleRotate(this, degrees);
+
         public void Curve(double radius, double length) => Presentation?.TurtleCurve(this, radius, length);
+
         public void Circle(double radius) => Presentation?.TurtleCurve(this, radius, 2 * Math.PI * radius);
+
         public void Square(double sideLength)
         {
             if (IsPlacedOnSomething)
@@ -65,6 +68,7 @@ namespace TurtleSharp
                 Rotate(90);
             }
         }
+
         public void Triangle(double sideLength)
         {
             if (IsPlacedOnSomething)
@@ -77,6 +81,7 @@ namespace TurtleSharp
                 Rotate(60);
             }
         }
+
         public void GoHome() => Presentation?.TurtleReset(this);
     }
 }

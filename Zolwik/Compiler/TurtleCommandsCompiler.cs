@@ -1,20 +1,18 @@
 ﻿using Microsoft.CSharp;
 using System;
 using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Linq;
 using TurtleSharp;
 
 namespace Zolwik.Compiler
 {
-    public class TurtleCommandsCompiler: ITurtleCommandsCompiler
+    public class TurtleCommandsCompiler : ITurtleCommandsCompiler
     {
-        string[] References;
-        CompilerParameters Options = new CompilerParameters();
-        CSharpCodeProvider Compiler = new CSharpCodeProvider();
-        string ScriptPrefix =
+        private string[] References;
+        private CompilerParameters Options = new CompilerParameters();
+        private CSharpCodeProvider Compiler = new CSharpCodeProvider();
+
+        private string ScriptPrefix =
             "using System;" +
             "using TurtleSharp;" +
             "" +
@@ -22,7 +20,8 @@ namespace Zolwik.Compiler
             "{" +
             "   public static class GeneratedClass {" +
             "       public static void GeneratedMethod(Turtle Turtle, ITurtlePresentation Canvas) {\n";
-        string ScriptPostfix =
+
+        private string ScriptPostfix =
             "       }" +
             "   }" +
             "}";
@@ -63,6 +62,6 @@ namespace Zolwik.Compiler
             return method.CreateDelegate(typeof(Action<Turtle, ITurtlePresentation>)) as Action<Turtle, ITurtlePresentation>;
         }
 
-        string ComposeSource(string script) => string.Concat(ScriptPrefix, script, ScriptPostfix);
+        private string ComposeSource(string script) => string.Concat(ScriptPrefix, script, ScriptPostfix);
     }
 }
