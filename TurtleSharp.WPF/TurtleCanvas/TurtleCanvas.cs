@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,31 +16,44 @@ using System.Windows.Shapes;
 
 namespace TurtleSharp.WPF
 {
-    public class TurtleCanvas : Canvas, ITurtlePresentation
+    public partial class TurtleCanvas : Canvas, ITurtlePresentation
     {
-        static TurtleCanvas()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(TurtleCanvas), new FrameworkPropertyMetadata(typeof(TurtleCanvas)));
-        }
+        private Rectangle _turtleRep;
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            //Clear the Canvas
+            this.Children.Clear();
         }
 
+        //Place the turtle on the screen
         public void PlaceTurtle(Turtle turtle)
         {
-            throw new NotImplementedException();
+            //Set the repr as the Rectangle
+            _turtleRep = new Rectangle();
+            
+            //Set the parameters
+            _turtleRep.Width = 15;
+            _turtleRep.Height = 15;
+
+            //Set the color
+            _turtleRep.Fill = new SolidColorBrush(Colors.Green);
+
+            //Display the turtle
+            this.Children.Add(_turtleRep);
         }
 
         public void RemoveTurtle(Turtle turtle)
         {
-            throw new NotImplementedException();
+            //Remove the turtle from the Canvas and set it on null
+            this.Children.Remove(_turtleRep);
+            _turtleRep = null;
         }
 
         public void ToggleTurtleVisibility(Turtle turtle)
         {
-            throw new NotImplementedException();
+            //Just reverse the bool
+            turtle.IsVisible = !turtle.IsVisible;
         }
 
         public void TurtleBackward(Turtle turtle, double distance)
@@ -59,7 +73,14 @@ namespace TurtleSharp.WPF
 
         public void TurtleReset(Turtle turtle)
         {
-            throw new NotImplementedException();
+            //Reset the position of turtle
+            //TODO: Reset position
+
+            //Delete all drawings form Canvas
+            //foreach (var child in this.Children)
+            //{
+                //this.Children.Remove(child);
+            //}
         }
 
         public void TurtleRotate(Turtle turtle, double degrees)

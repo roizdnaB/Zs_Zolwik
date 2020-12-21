@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TurtleSharp", "TurtleSharp\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TurtleSharp.WPF", "TurtleSharp.WPF\TurtleSharp.WPF.csproj", "{9318659B-ACAE-481C-BD6D-B4BA68F2708C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVM", "MVVM\MVVM.csproj", "{AB1CFB2D-3BD5-4277-8EDA-89B8431BAE68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVVM", "MVVM\MVVM.csproj", "{AB1CFB2D-3BD5-4277-8EDA-89B8431BAE68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TurtleTests", "TurtleTests\TurtleTests.csproj", "{533C44AE-18E9-49AD-A21D-DDFFE0A449F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{AB1CFB2D-3BD5-4277-8EDA-89B8431BAE68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB1CFB2D-3BD5-4277-8EDA-89B8431BAE68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB1CFB2D-3BD5-4277-8EDA-89B8431BAE68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{533C44AE-18E9-49AD-A21D-DDFFE0A449F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{533C44AE-18E9-49AD-A21D-DDFFE0A449F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{533C44AE-18E9-49AD-A21D-DDFFE0A449F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{533C44AE-18E9-49AD-A21D-DDFFE0A449F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
