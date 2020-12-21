@@ -18,6 +18,29 @@ namespace TurtleSharp.WPF
     public class TurtleCanvas : Canvas, ITurtlePresentation
     {
 
+        #region TurtlePresentationHookDefinition
+
+        public static readonly DependencyProperty TurtlePresentationHookProperty =
+            DependencyProperty.Register(
+                "TurtlePresentationHook",
+                typeof(object),
+                typeof(TurtleCanvas),
+                new FrameworkPropertyMetadata(null)
+                );
+
+        public object TurtlePresentationHook
+        {
+            get { return (ITurtlePresentation)GetValue(TurtlePresentationHookProperty); }
+            set { throw new Exception("Can't set the Turtle Presentation Hook of a TurtleCanvas, it's readonly."); }
+        }
+
+        public TurtleCanvas(): base()
+        {
+            SetValue(TurtlePresentationHookProperty, this);
+        }
+
+        #endregion
+
         //Graphic representation of turtle
         private Rectangle _turtleRep;
 
