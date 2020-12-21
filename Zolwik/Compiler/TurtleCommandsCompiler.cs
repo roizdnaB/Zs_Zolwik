@@ -12,8 +12,8 @@ namespace Zolwik.Compiler
     public static class TurtleCommandsCompiler
     {
         static string[] References;
-        static CompilerParameters Options;
-        static CSharpCodeProvider Compiler;
+        static CompilerParameters Options = new CompilerParameters();
+        static CSharpCodeProvider Compiler = new CSharpCodeProvider();
         static string ScriptPrefix =
             "using System;" +
             "using TurtleSharp;" +
