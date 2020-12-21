@@ -1,17 +1,12 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using MVVM.ViewModel;
-using System.Windows.Input;
+﻿using MVVM.ViewModel;
 using System.IO;
+using System.Windows;
 using TurtleSharp;
 using Zolwik.DialogBoxes;
 
 namespace Zolwik.ViewModels
 {
-     class MenuVM : ViewModelBase
+    internal class MenuVM : ViewModelBase
     {
         private string _text = string.Empty;
         private string _path = null;
@@ -36,7 +31,7 @@ namespace Zolwik.ViewModels
             }
         }
 
-        private void _saveAsTextFromFileCommand(object path) 
+        private void _saveAsTextFromFileCommand(object path)
         {
             string FilePath = path as string;
 
@@ -51,8 +46,7 @@ namespace Zolwik.ViewModels
             {
                 Path = FilePath;
             }
-                File.WriteAllText(Path, Text);
-            
+            File.WriteAllText(Path, Text);
         }
 
         private void _copyTextCommand()
@@ -63,15 +57,21 @@ namespace Zolwik.ViewModels
 
         private void _aboutCommand()
         {
+            //Turtle TEMP
+            Turtle turtle = new Turtle();
+            _canvas.PlaceTurtle(turtle);
+            _canvas.TurtleForward(turtle, 200);
+
+            //Turtle END
+
             var dialogBox = new MessageDialogBox()
             {
                 Caption = "O projekcie",
                 Icon = System.Windows.MessageBoxImage.Warning,
                 Buttons = System.Windows.MessageBoxButton.OK
-        };
+            };
             dialogBox.showMessageBox("Projekt zaliczeniowy z przedmiotu Inżynieria Oprogramowania. \n\n Natalia Szarek, Krzysztof Kłak, Daniel Jambor");
         }
-
 
         public MenuVM()
         {
@@ -82,5 +82,4 @@ namespace Zolwik.ViewModels
             About = new RelayCommand(arg => _aboutCommand());
         }
     }
-
 }
