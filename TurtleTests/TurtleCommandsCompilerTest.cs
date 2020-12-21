@@ -10,7 +10,7 @@ namespace TurtleTests
         [Fact]
         public void ItProducesAnything()
         {
-            Assert.NotNull(TurtleCommandsCompiler.compileTurtleCommands(""));
+            Assert.NotNull(new TurtleCommandsCompiler().CompileTurtleCommands(""));
         }
     }
 }
