@@ -37,7 +37,7 @@ namespace Zolwik.ViewModels
         {
             LoadTextFromFile = new RelayCommand(arg => _loadTextFromFileCommand(arg));
             SaveTextFromFile = new RelayCommand(arg => _saveTextFromFileCommand(arg));
-
+        
         }
     }
 
