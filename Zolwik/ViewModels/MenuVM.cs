@@ -12,7 +12,7 @@ namespace Zolwik.ViewModels
 {
      class MenuVM : ViewModelBase
     {
-        private string _text = String.Empty;
+        private string _text = string.Empty;
         private ITurtlePresentation _canvas;
         public string Text { get => _text; set { _text = value; OnPropertyChanged(nameof(Text)); } }
         public ITurtlePresentation TurtlePresentationHook { get => _canvas; set { _canvas = value; OnPropertyChanged(nameof(TurtlePresentationHook)); } }
@@ -22,8 +22,6 @@ namespace Zolwik.ViewModels
 
         private void _loadTextFromFileCommand(object path)
         {
-            TurtlePresentationHook.Clear();
-
             string FilePath = path as string;
 
             if (File.Exists(FilePath))
