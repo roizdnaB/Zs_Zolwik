@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace Zolwik.ViewModels
 {
@@ -63,8 +62,7 @@ namespace Zolwik.ViewModels
             checkBox.Checked -= MenuItemChecked;
         }
 
-
-        static void MenuItemChecked(object sender, RoutedEventArgs e)
+        private static void MenuItemChecked(object sender, RoutedEventArgs e)
         {
             var menuItem = e.OriginalSource as MenuItem;
             foreach (var item in ElementToGroupNames)

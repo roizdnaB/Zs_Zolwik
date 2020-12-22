@@ -3,8 +3,8 @@ using System.Windows;
 
 namespace TurtleSharp.WPF
 {
-   public partial class TurtleCanvas {
-
+    public partial class TurtleCanvas
+    {
         #region TurtlePresentationHookDefinition
 
         public static readonly DependencyProperty TurtlePresentationHookProperty =
@@ -26,6 +26,7 @@ namespace TurtleSharp.WPF
             get { return (ITurtlePresentation)GetValue(TurtlePresentationHookProperty); }
             set { throw new Exception("Can't set the Turtle Presentation Hook of a TurtleCanvas, it's readonly."); }
         }
+
         static TurtleCanvas()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TurtleCanvas), new FrameworkPropertyMetadata(typeof(TurtleCanvas)));
@@ -42,6 +43,6 @@ namespace TurtleSharp.WPF
             canvas._turtlePresentationHook = args.NewValue as ITurtlePresentation;
         }
 
-        #endregion
+        #endregion TurtlePresentationHookDefinition
     }
 }

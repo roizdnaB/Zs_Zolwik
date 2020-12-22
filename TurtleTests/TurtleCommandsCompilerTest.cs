@@ -1,5 +1,3 @@
-using System;
-using Zolwik;
 using Xunit;
 using Zolwik.Compiler;
 

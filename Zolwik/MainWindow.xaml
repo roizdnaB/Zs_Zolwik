@@ -9,21 +9,22 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:db="clr-namespace:Zolwik.DialogBoxes"
+        xmlns:resx="clr-namespace:Zolwik.Zasoby"
         mc:Ignorable="d"
         Title="{x:Static resx:Resource.title}" Height="450" Width="800">
     <Window.DataContext>
-        <vm:MenuVM/>
+        <vm:MenuVM />
     </Window.DataContext>
-    
+
     <Grid Background="WhiteSmoke">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.6*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition/>
+            <RowDefinition Height="0.6*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <db:OpenFileDialogBox
@@ -31,34 +32,33 @@
             Filter="Text Files txt files (*.txt)|*.txt"
             CommandFileOk="{Binding LoadTextFromFile}"
             DefaultExtension="txt"
-            FilterIndex="0"/>
+            FilterIndex="0" />
 
         <db:SaveFileDialogBox
             x:Name="SaveFile"
             Filter="Text Files txt files (*.txt)|*.txt"
             CommandFileOk="{Binding SaveTextFromFile}"
             DefaultExtension="txt"
-            FilterIndex="0"/>
+            FilterIndex="0" />
 
         <DockPanel Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top" Background="LightGray" BorderThickness="1" BorderBrush="Black">
                 <MenuItem Header="{x:Static resx:Resource.script}">
                     <MenuItem Header="{x:Static resx:Resource._new}" />
-                    <MenuItem Header="{x:Static resx:Resource.open}" Command ="{Binding ElementName=LoadFile, Path=Show}"/>
+                    <MenuItem Header="{x:Static resx:Resource.open}" Command ="{Binding ElementName=LoadFile, Path=Show}" />
                     <MenuItem Header="{x:Static resx:Resource.save}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
                     <MenuItem Header="{x:Static resx:Resource.saveAs}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
                 </MenuItem>
                 <MenuItem Header="{x:Static resx:Resource.image}">
-                    <MenuItem Header="{x:Static resx:Resource._new}"/>
-                    <MenuItem Header="{x:Static resx:Resource.open}"/>
+                    <MenuItem Header="{x:Static resx:Resource._new}" />
+                    <MenuItem Header="{x:Static resx:Resource.open}" />
                     <MenuItem Header="{x:Static resx:Resource.save}" />
-                    <MenuItem Header="{x:Static resx:Resource.saveAs}"/>
+                    <MenuItem Header="{x:Static resx:Resource.saveAs}" />
                 </MenuItem>
-                <MenuItem Header="{x:Static resx:Resource.settings}" >
+                <MenuItem Header="{x:Static resx:Resource.settings}">
                     <MenuItem Header="{x:Static resx:Resource.background}">
                         <MenuItem Header="{x:Static resx:Resource._default}" IsCheckable="True" IsChecked="True" x:Name="MenuItem_Default" vm:MenuItemExtensions.GroupName="someGroup" />
-                        <MenuItem Header="{x:Static resx:Resource.dark}" IsCheckable="True" IsChecked="False" x:Name="MenuItem_Dark" vm:MenuItemExtensions.GroupName="someGroup"/>
-
+                        <MenuItem Header="{x:Static resx:Resource.dark}" IsCheckable="True" IsChecked="False" x:Name="MenuItem_Dark" vm:MenuItemExtensions.GroupName="someGroup" />
                     </MenuItem>
                 </MenuItem>
                     <MenuItem Header="{x:Static resx:Resource.about}" Command="{Binding About}">
@@ -66,13 +66,13 @@
             </Menu>
         </DockPanel>
         <Border Grid.Column="0" Grid.Row="1" Grid.RowSpan="1" Margin="10" BorderBrush="Gray" BorderThickness="1">
-            <ts:TurtleCanvas Background="White" TurtlePresentationHook="{Binding Path=TurtlePresentationHook, Mode=OneWayToSource}"/>
+            <ts:TurtleCanvas Background="White" TurtlePresentationHook="{Binding Path=TurtlePresentationHook, Mode=OneWayToSource}" />
         </Border>
         <TextBox Grid.Column="1" Margin="10" Grid.Row="1" Text="{Binding Text}"
                      ScrollViewer.VerticalScrollBarVisibility="Visible"
-                     TextWrapping="Wrap"/>
+                     TextWrapping="Wrap" />
         <StackPanel Grid.Column="1" Grid.Row="2" Margin="10,5" HorizontalAlignment="Center">
-            <Button Width="100" Height="20" Content="{x:Static resx:Resource.run}" Background="LightGray"/>
+            <Button Width="100" Height="20" Content="{x:Static resx:Resource.run}" Background="LightGray" />
         </StackPanel>
     </Grid>
 </Window>
