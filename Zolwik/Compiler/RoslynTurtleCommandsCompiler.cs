@@ -19,8 +19,10 @@ namespace Zolwik.Compiler
 
         static MetadataReference[] References =
         {
-            MetadataReference.CreateFromFile(typeof(object).Assembly.Location), //system reference
-            MetadataReference.CreateFromFile(typeof(Turtle).Assembly.Location) //TurtleSharp reference
+            MetadataReference.CreateFromFile(typeof(object).Assembly.Location),                             //
+            MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Core")).Location),      //  system references
+            MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Runtime")).Location),   //
+            MetadataReference.CreateFromFile(typeof(Turtle).Assembly.Location)                              //TurtleSharp reference
         };
         static string[] Namespaces =
         {
@@ -45,9 +47,13 @@ namespace Zolwik.Compiler
             "       }" +
             "   }" +
             "}";
+
+        static string assemblyName = "generated.dll";
+        static string generatedAssemblyPath = Path.Combine(Directory.GetCurrentDirectory(), assemblyName);
+
+
         public Action<Turtle, ITurtlePresentation> CompileTurtleCommands(string script)
         {
-            var assemblyName = "generated.dll";
             var source = ComposeSource(script);
             var syntaxTrees = new SyntaxTree[] { SyntaxFactory.ParseSyntaxTree(source, CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.CSharp8)) };
 
@@ -56,7 +62,6 @@ namespace Zolwik.Compiler
                 .WithReferences(References)
                 .AddSyntaxTrees(syntaxTrees);
 
-            string generatedAssemblyPath = Path.Combine(Directory.GetCurrentDirectory(), assemblyName);
             var emittedResult = compiled.Emit(generatedAssemblyPath);
 
             if (emittedResult.Success)
@@ -78,7 +83,6 @@ namespace Zolwik.Compiler
                     Console.WriteLine(issueDescriptor);
                 }
             }
-
             return null;
         }
 

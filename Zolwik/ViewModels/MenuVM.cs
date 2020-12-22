@@ -2,12 +2,16 @@
 using System.IO;
 using System.Windows;
 using TurtleSharp;
+using Zolwik.Compiler;
 using Zolwik.DialogBoxes;
 
 namespace Zolwik.ViewModels
 {
     internal class MenuVM : ViewModelBase
     {
+        private ITurtleCommandsCompiler _compiler = new RoslynTurtleCommandsCompiler();
+        private Turtle Turtle = new Turtle();
+
         private string _text = string.Empty;
         private string _path = null;
         public string Path { get => _path; set => _path = value; }
@@ -18,7 +22,7 @@ namespace Zolwik.ViewModels
         public RelayCommand SaveTextFromFile { get; private set; }
         public RelayCommand SaveAsTextFromFile { get; private set; }
         public RelayCommand CopyText { get; private set; }
-
+        public RelayCommand Run { get; private set; }
         public RelayCommand About { get; private set; }
 
         private void _loadTextFromFileCommand(object path)
@@ -57,13 +61,6 @@ namespace Zolwik.ViewModels
 
         private void _aboutCommand()
         {
-            //Turtle TEMP
-            Turtle turtle = new Turtle();
-            _canvas.PlaceTurtle(turtle);
-            _canvas.TurtleForward(turtle, 200);
-
-            //Turtle END
-
             var dialogBox = new MessageDialogBox()
             {
                 Caption = "O projekcie",
@@ -80,6 +77,12 @@ namespace Zolwik.ViewModels
             SaveAsTextFromFile = new RelayCommand(arg => _saveAsTextFromFileCommand(arg));
             CopyText = new RelayCommand(arg => _copyTextCommand());
             About = new RelayCommand(arg => _aboutCommand());
+            Run = new RelayCommand(
+                arg =>
+                {
+                    _compiler.CompileTurtleCommands(Text).Invoke(Turtle, TurtlePresentationHook);
+                }
+            );
         }
     }
 }
