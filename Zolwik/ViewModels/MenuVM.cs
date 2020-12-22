@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 using MVVM.ViewModel;
 using System.IO;
 using System.Windows;
@@ -10,8 +11,8 @@ namespace Zolwik.ViewModels
 {
     internal class MenuVM : ViewModelBase
     {
-        public ITurtleCommandsCompiler _compiler = new RoslynTurtleCommandsCompiler();
-        public Turtle Turtle = new Turtle();
+        private ITurtleCommandsCompiler _compiler = new RoslynTurtleCommandsCompiler();
+        private Turtle Turtle = new Turtle();
 
         private string _text = string.Empty;
         private string _path = null;
@@ -82,7 +83,13 @@ namespace Zolwik.ViewModels
             Run = new RelayCommand(
                 arg =>
                 {
-                    CSharpScript.RunAsync(Text, globals: new TurtleCanvasPair { Turtle = Turtle, Canvas = TurtlePresentationHook }, globalsType: typeof(TurtleCanvasPair));
+                    _canvas.Clear();
+                    CSharpScript.RunAsync(
+                        Text,
+                        globals: new TurtleCanvasPair { Turtle = Turtle, Canvas = TurtlePresentationHook },
+                        globalsType: typeof(TurtleCanvasPair),
+                        options: ScriptOptions.Default.WithEmitDebugInformation(true)
+                    );
                 }
             );
         }
