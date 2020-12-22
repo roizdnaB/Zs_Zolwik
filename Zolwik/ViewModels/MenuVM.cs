@@ -1,4 +1,5 @@
-﻿using MVVM.ViewModel;
+﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
+using MVVM.ViewModel;
 using System.IO;
 using System.Windows;
 using TurtleSharp;
@@ -9,8 +10,8 @@ namespace Zolwik.ViewModels
 {
     internal class MenuVM : ViewModelBase
     {
-        private ITurtleCommandsCompiler _compiler = new RoslynTurtleCommandsCompiler();
-        private Turtle Turtle = new Turtle();
+        public ITurtleCommandsCompiler _compiler = new RoslynTurtleCommandsCompiler();
+        public Turtle Turtle = new Turtle();
 
         private string _text = string.Empty;
         private string _path = null;
@@ -70,6 +71,7 @@ namespace Zolwik.ViewModels
             dialogBox.showMessageBox("Projekt zaliczeniowy z przedmiotu Inżynieria Oprogramowania. \n\n Natalia Szarek, Krzysztof Kłak, Daniel Jambor");
         }
 
+
         public MenuVM()
         {
             LoadTextFromFile = new RelayCommand(arg => _loadTextFromFileCommand(arg));
@@ -80,9 +82,15 @@ namespace Zolwik.ViewModels
             Run = new RelayCommand(
                 arg =>
                 {
-                    _compiler.CompileTurtleCommands(Text).Invoke(Turtle, TurtlePresentationHook);
+                    CSharpScript.RunAsync(Text, globals: new TurtleCanvasPair { Turtle = Turtle, Canvas = TurtlePresentationHook }, globalsType: typeof(TurtleCanvasPair));
                 }
             );
         }
+
+    }
+    public class TurtleCanvasPair
+    {
+        public Turtle Turtle { get; set; }
+        public ITurtlePresentation Canvas { get; set; }
     }
 }
