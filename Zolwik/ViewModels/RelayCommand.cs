@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace Zolwik.ViewModels
 {
-    class RelayCommand : ICommand
+    internal class RelayCommand : ICommand
     {
-        readonly Action<object> _execute;
-        readonly Predicate<object> _canExecute;
+        private readonly Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
         {

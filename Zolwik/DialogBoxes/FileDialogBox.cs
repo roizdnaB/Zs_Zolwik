@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 
 namespace Zolwik.DialogBoxes
@@ -12,10 +9,11 @@ namespace Zolwik.DialogBoxes
 
         // Odpowiedź okna dialogowego
         public bool? FileDialogResult { get; protected set; }
+
         // Okno dialogowe dotyczące plików
         protected Microsoft.Win32.FileDialog fileDialog = null;
 
-        #endregion
+        #endregion Pola klasy
 
         #region Własności zależności i ich rejestracje
 
@@ -38,7 +36,7 @@ namespace Zolwik.DialogBoxes
         protected static readonly DependencyProperty commandFileOkProperty =
             DependencyProperty.Register("CommandFileOk", typeof(ICommand), typeof(FileDialogBox));
 
-        #endregion
+        #endregion Własności zależności i ich rejestracje
 
         #region Właściwości
 
@@ -72,7 +70,7 @@ namespace Zolwik.DialogBoxes
             set { SetValue(commandFileOkProperty, value); }
         }
 
-        #endregion
+        #endregion Właściwości
 
         #region Konstruktor
 
@@ -81,7 +79,7 @@ namespace Zolwik.DialogBoxes
             execute = o => setFileDialogBox(o);
         }
 
-        #endregion
+        #endregion Konstruktor
 
         #region Metody pomocnicze
 
@@ -124,12 +122,12 @@ namespace Zolwik.DialogBoxes
                 // Jeśli parametr jest null, to ustalamy go jako ścieżka do pliku
                 if (commandParameter == null)
                     commandParameter = FilePath;
-                // Uruchamiamy polecenie CommandFileOk, 
+                // Uruchamiamy polecenie CommandFileOk,
                 // a jako parametr przekazujemy (domyślnie!) ściężkę do pliku
                 executeCommand(CommandFileOk, commandParameter);
             }
         }
 
-        #endregion
+        #endregion Metody pomocnicze
     }
 }
