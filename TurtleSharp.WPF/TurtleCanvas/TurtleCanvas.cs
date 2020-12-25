@@ -23,8 +23,8 @@ namespace TurtleSharp.WPF
             _turtleRep.Fill = Brushes.Green;
 
             //Calculate the coords of the middle of the canvas
-            var xCenter = (200 / 2);
-            var yCenter = 200 / 2;
+            var xCenter = 0;// (200 / 2);
+            var yCenter = 0;// 200 / 2;
 
             //Set the shape of the turtle
             Point Point1 = new Point(xCenter - 10, yCenter - 10);
