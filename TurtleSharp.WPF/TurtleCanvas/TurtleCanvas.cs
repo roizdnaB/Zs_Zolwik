@@ -28,7 +28,7 @@ namespace TurtleSharp.WPF
             //Calculate the coords of the middle of the canvas
             var xCenter = 0;
             var yCenter = 0;
-            
+
             //Set the shape of the turtle
             Point PointA = new Point(xCenter - 12, yCenter);
             Point PointB = new Point(xCenter - 8, yCenter - 4);
@@ -115,7 +115,7 @@ namespace TurtleSharp.WPF
             {
                 //Get the starting position of turtle
                 var lineStartX = _turtleRep.Points[0].X;
-                var lineStartY = _turtleRep.Points[0].Y; // Plus 10 - a half of height of turtle
+                var lineStartY = _turtleRep.Points[0].Y;
 
                 //Cannot use the foreach bc Points are IEnumerable
                 for (int i = 0; i < _turtleRep.Points.Count; i++)
@@ -139,6 +139,8 @@ namespace TurtleSharp.WPF
 
                 //Show the line
                 this.Children.Add(polyline);
+
+                //TODO: Add rotate to _turtleRep
             }
         }
 
@@ -151,7 +153,25 @@ namespace TurtleSharp.WPF
 
         public void TurtleRotate(Turtle turtle, double degrees)
         {
-            throw new NotImplementedException();
+            //Convert degrees to radiants
+            double angle = (Math.PI * -degrees) / 180.0;
+
+            //Save the sin and cos values
+            double sinVal = Math.Round(Math.Sin(angle), 4);
+            double cosVal = Math.Round(Math.Cos(angle), 4);
+
+            //Get the tail coords of the turtle
+            double xTail = _turtleRep.Points[0].X;
+            double yTail = _turtleRep.Points[0].Y;
+
+            for (int i = 0; i < _turtleRep.Points.Count; i++)
+            {
+                //Create a new Point and insert it in the place of old one
+                Point point = _turtleRep.Points[i];
+                point.X = ((_turtleRep.Points[i].X - xTail) * cosVal) - ((_turtleRep.Points[i].Y - yTail) * sinVal) + xTail;
+                point.Y = ((_turtleRep.Points[i].X - xTail) * sinVal) + ((_turtleRep.Points[i].Y - yTail) * cosVal) + yTail;
+                _turtleRep.Points[i] = point;
+            }
         }
     }
 }
