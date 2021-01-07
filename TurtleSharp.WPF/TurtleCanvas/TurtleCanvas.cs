@@ -8,12 +8,15 @@ namespace TurtleSharp.WPF
 {
     public partial class TurtleCanvas : Canvas, ITurtlePresentation
     {
-        private Polygon _turtleRep;
+        private Polygon _turtleRep = null;
 
         public void Clear()
         {
             //Clear the Canvas
             this.Children.Clear();
+
+            //Set turtle to null
+            _turtleRep = null;
         }
 
         //Place the turtle on the screen
@@ -23,22 +26,10 @@ namespace TurtleSharp.WPF
             _turtleRep.Fill = Brushes.Green;
 
             //Calculate the coords of the middle of the canvas
-            var xCenter = 0;// (200 / 2);
-            var yCenter = 0;// 200 / 2;
-            /*
+            var xCenter = 0;
+            var yCenter = 0;
+            
             //Set the shape of the turtle
-            Point Point1 = new Point(xCenter - 10, yCenter - 10);
-            Point Point2 = new Point(xCenter + 10, yCenter - 10);
-            Point Point3 = new Point(xCenter + 10, yCenter + 10);
-            Point Point4 = new Point(xCenter - 10, yCenter + 10);
-
-            //Set the collection of points and add all points to the collection
-            PointCollection myPointCollection = new PointCollection();
-            myPointCollection.Add(Point1);
-            myPointCollection.Add(Point2);
-            myPointCollection.Add(Point3);
-            myPointCollection.Add(Point4);
-            */
             Point PointA = new Point(xCenter - 12, yCenter);
             Point PointB = new Point(xCenter - 8, yCenter - 4);
             Point PointC = new Point(xCenter - 10, yCenter - 10);
@@ -62,6 +53,7 @@ namespace TurtleSharp.WPF
             Point PointW = new Point(xCenter - 10, yCenter + 10);
             Point PointZ = new Point(xCenter - 8, yCenter + 4);
 
+            //Set the collection of points and add all points to the collection
             PointCollection myPointCollection = new PointCollection();
             myPointCollection.Add(PointA);
             myPointCollection.Add(PointB);
@@ -106,7 +98,7 @@ namespace TurtleSharp.WPF
 
         public void TurtleBackward(Turtle turtle, double distance)
         {
-            throw new NotImplementedException();
+            this.TurtleForward(turtle, -distance);
         }
 
         public void TurtleCurve(Turtle turtle, double radius, double length)
@@ -120,7 +112,7 @@ namespace TurtleSharp.WPF
             {
                 //Get the starting position of turtle
                 var lineStartX = _turtleRep.Points[0].X;
-                var lineStartY = _turtleRep.Points[0].Y + 10; // Plus 10 - a half of height of turtle
+                var lineStartY = _turtleRep.Points[0].Y; // Plus 10 - a half of height of turtle
 
                 //Cannot use the foreach bc Points are IEnumerable
                 for (int i = 0; i < _turtleRep.Points.Count; i++)
@@ -133,7 +125,7 @@ namespace TurtleSharp.WPF
 
                 //Get the ending position of turtle
                 var lineEndX = _turtleRep.Points[0].X;
-                var lineEndY = _turtleRep.Points[0].Y + 10;
+                var lineEndY = _turtleRep.Points[0].Y;
 
                 //Create a line
                 Polyline polyline = new Polyline();
