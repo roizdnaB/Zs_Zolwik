@@ -98,7 +98,10 @@ namespace TurtleSharp.WPF
 
         public void TurtleBackward(Turtle turtle, double distance)
         {
+            //Just reverse the distance value and call the forward method (smart!!!)
             this.TurtleForward(turtle, -distance);
+
+            //TODO: Add rotate to _turtleRep
         }
 
         public void TurtleCurve(Turtle turtle, double radius, double length)
@@ -141,14 +144,9 @@ namespace TurtleSharp.WPF
 
         public void TurtleReset(Turtle turtle)
         {
-            //Reset the position of turtle
-            //TODO: Reset position
-
-            //Delete all drawings form Canvas
-            //foreach (var child in this.Children)
-            //{
-            //this.Children.Remove(child);
-            //}
+            //Delete the turtle from Canvas and add a new one
+            this.RemoveTurtle(turtle);
+            this.PlaceTurtle(turtle);
         }
 
         public void TurtleRotate(Turtle turtle, double degrees)
