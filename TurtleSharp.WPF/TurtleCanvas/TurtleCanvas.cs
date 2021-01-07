@@ -24,6 +24,11 @@ namespace TurtleSharp.WPF
         {
             _turtleRep = new Polygon();
             _turtleRep.Fill = Brushes.Green;
+            _turtleRep.Stroke = Brushes.Black;
+            _turtleRep.StrokeThickness = 2;
+
+            //Make shell green
+            _turtleRep.FillRule = FillRule.Nonzero;
 
             //Calculate the coords of the middle of the canvas
             var xCenter = 0;
@@ -55,6 +60,7 @@ namespace TurtleSharp.WPF
 
             //Set the collection of points and add all points to the collection
             PointCollection myPointCollection = new PointCollection();
+            //turtle
             myPointCollection.Add(PointA);
             myPointCollection.Add(PointB);
             myPointCollection.Add(PointC);
@@ -77,9 +83,17 @@ namespace TurtleSharp.WPF
             myPointCollection.Add(PointU);
             myPointCollection.Add(PointW);
             myPointCollection.Add(PointZ);
+            //shell
+            myPointCollection.Add(PointA);
+            myPointCollection.Add(PointE);
+            myPointCollection.Add(PointI);
+            myPointCollection.Add(PointO);
+            myPointCollection.Add(PointT);
+            
 
             //Show the turtle
             _turtleRep.Points = myPointCollection;
+            
             this.Children.Add(_turtleRep);
         }
 
