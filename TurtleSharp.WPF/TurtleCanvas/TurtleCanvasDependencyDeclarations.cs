@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -40,15 +39,12 @@ namespace TurtleSharp.WPF
             SetValue(TurtlePresentationHookProperty, this);
             //SetValue(ClipToBoundsProperty, true);
 
-
             //The commented part below should swap the Y coordinates
             //but instead it gliches the canvas out totally :(
             RenderTransform = new ScaleTransform();// { ScaleX = 1, ScaleY = -1 };
 
-
             MouseWheel += MouseWheelCallback;
         }
-
 
         private static void OnTurtlePresentationHookChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
@@ -57,6 +53,7 @@ namespace TurtleSharp.WPF
         }
 
         #endregion TurtlePresentationHookDefinition
+
         private void MouseWheelCallback(object sender, MouseWheelEventArgs e)
         {
             var rt = RenderTransform as ScaleTransform;
@@ -65,7 +62,6 @@ namespace TurtleSharp.WPF
 
             rt.ScaleX *= zoomDelta;
             rt.ScaleY *= zoomDelta;
-
 
             //This part should make the canvas center at the mouse position when zooming in and out.
             //It's kinda wanky but it's better than nothing.
@@ -76,9 +72,7 @@ namespace TurtleSharp.WPF
 
             rt.CenterX = mousePosition.X;
             rt.CenterY = mousePosition.Y;
-
         }
-
 
         protected override Size ArrangeOverride(Size arrangeSize)
         {

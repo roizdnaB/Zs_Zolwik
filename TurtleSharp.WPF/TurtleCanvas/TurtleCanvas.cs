@@ -9,6 +9,7 @@ namespace TurtleSharp.WPF
     public partial class TurtleCanvas : Canvas, ITurtlePresentation
     {
         private Polygon _turtleRep = null;
+        private double _rotation = 0;
 
         public void Clear()
         {
@@ -30,9 +31,10 @@ namespace TurtleSharp.WPF
             //Make shell green
             _turtleRep.FillRule = FillRule.Nonzero;
 
-            //Calculate the coords of the middle of the canvas
+            //Calculate the coords of the middle of the canvas and rotation value
             var xCenter = 0;
             var yCenter = 0;
+            _rotation = 0;
 
             //Set the shape of the turtle
             Point PointA = new Point(xCenter - 12, yCenter);
@@ -60,7 +62,8 @@ namespace TurtleSharp.WPF
 
             //Set the collection of points and add all points to the collection
             PointCollection myPointCollection = new PointCollection();
-            //turtle
+
+            //Turtle
             myPointCollection.Add(PointA);
             myPointCollection.Add(PointB);
             myPointCollection.Add(PointC);
@@ -83,17 +86,17 @@ namespace TurtleSharp.WPF
             myPointCollection.Add(PointU);
             myPointCollection.Add(PointW);
             myPointCollection.Add(PointZ);
-            //shell
+
+            //Shell
             myPointCollection.Add(PointA);
             myPointCollection.Add(PointE);
             myPointCollection.Add(PointI);
             myPointCollection.Add(PointO);
             myPointCollection.Add(PointT);
-            
 
             //Show the turtle
             _turtleRep.Points = myPointCollection;
-            
+
             this.Children.Add(_turtleRep);
         }
 
@@ -114,8 +117,7 @@ namespace TurtleSharp.WPF
         {
             //Just reverse the distance value and call the forward method (smart!!!)
             this.TurtleForward(turtle, -distance);
-
-            //TODO: Add rotate to _turtleRep
+            this.TurtleRotate(turtle, _rotation - 180);
         }
 
         public void TurtleCurve(Turtle turtle, double radius, double length)
@@ -153,8 +155,6 @@ namespace TurtleSharp.WPF
 
                 //Show the line
                 this.Children.Add(polyline);
-
-                //TODO: Add rotate to _turtleRep
             }
         }
 
@@ -167,24 +167,35 @@ namespace TurtleSharp.WPF
 
         public void TurtleRotate(Turtle turtle, double degrees)
         {
-            //Convert degrees to radiants
-            double angle = (Math.PI * -degrees) / 180.0;
-
-            //Save the sin and cos values
-            double sinVal = Math.Round(Math.Sin(angle), 4);
-            double cosVal = Math.Round(Math.Cos(angle), 4);
-
-            //Get the tail coords of the turtle
-            double xTail = _turtleRep.Points[0].X;
-            double yTail = _turtleRep.Points[0].Y;
-
-            for (int i = 0; i < _turtleRep.Points.Count; i++)
+            if (degrees == 0 || degrees % 180 == 0)
             {
-                //Create a new Point and insert it in the place of old one
-                Point point = _turtleRep.Points[i];
-                point.X = ((_turtleRep.Points[i].X - xTail) * cosVal) - ((_turtleRep.Points[i].Y - yTail) * sinVal) + xTail;
-                point.Y = ((_turtleRep.Points[i].X - xTail) * sinVal) + ((_turtleRep.Points[i].Y - yTail) * cosVal) + yTail;
-                _turtleRep.Points[i] = point;
+                //Do nothing if degrees is equal to 0 or 180k
+                return;
+            }
+            else
+            {
+                //Convert degrees to radiants
+                double angle = (Math.PI * -degrees) / 180.0;
+
+                //Set the rotation variable
+                _rotation = angle;
+
+                //Save the sin and cos values
+                double sinVal = Math.Round(Math.Sin(angle), 4);
+                double cosVal = Math.Round(Math.Cos(angle), 4);
+
+                //Get the tail coords of the turtle
+                double xTail = _turtleRep.Points[0].X;
+                double yTail = _turtleRep.Points[0].Y;
+
+                for (int i = 0; i < _turtleRep.Points.Count; i++)
+                {
+                    //Create a new Point and insert it in the place of old one
+                    Point point = _turtleRep.Points[i];
+                    point.X = ((_turtleRep.Points[i].X - xTail) * cosVal) - ((_turtleRep.Points[i].Y - yTail) * sinVal) + xTail;
+                    point.Y = ((_turtleRep.Points[i].X - xTail) * sinVal) + ((_turtleRep.Points[i].Y - yTail) * cosVal) + yTail;
+                    _turtleRep.Points[i] = point;
+                }
             }
         }
     }

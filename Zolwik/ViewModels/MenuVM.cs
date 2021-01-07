@@ -72,7 +72,6 @@ namespace Zolwik.ViewModels
             dialogBox.showMessageBox("Projekt zaliczeniowy z przedmiotu Inżynieria Oprogramowania. \n\n Natalia Szarek, Krzysztof Kłak, Daniel Jambor");
         }
 
-
         public MenuVM()
         {
             LoadTextFromFile = new RelayCommand(arg => _loadTextFromFileCommand(arg));
@@ -93,8 +92,8 @@ namespace Zolwik.ViewModels
                 }
             );
         }
-
     }
+
     public class TurtleCanvasPair
     {
         public Turtle Turtle { get; set; }

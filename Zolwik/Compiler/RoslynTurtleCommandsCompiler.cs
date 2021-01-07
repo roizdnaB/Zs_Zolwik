@@ -2,8 +2,6 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -14,43 +12,44 @@ namespace Zolwik.Compiler
 {
     public class RoslynTurtleCommandsCompiler : ITurtleCommandsCompiler
     {
-        static string runtimePath = typeof(object).Assembly.Location;
-        static string turtlePath = typeof(Turtle).Assembly.Location;
+        private static string runtimePath = typeof(object).Assembly.Location;
+        private static string turtlePath = typeof(Turtle).Assembly.Location;
 
-        static MetadataReference[] References =
+        private static MetadataReference[] References =
         {
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location),                             //
             MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Core")).Location),      //  system references
             MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Runtime")).Location),   //
             MetadataReference.CreateFromFile(typeof(Turtle).Assembly.Location)                              //TurtleSharp reference
         };
-        static string[] Namespaces =
+
+        private static string[] Namespaces =
         {
             "System",
             "TurtleSharp"
         };
 
-        static CSharpCompilationOptions CompilationOptions =
+        private static CSharpCompilationOptions CompilationOptions =
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
                     .WithOverflowChecks(true)
                     .WithOptimizationLevel(OptimizationLevel.Release)
                     .WithUsings(Namespaces);
 
-        static string ScriptPrefix =
+        private static string ScriptPrefix =
             "using TurtleSharp;" +
             "using System;" +
             "namespace Generated" +
             "{" +
             "   public static class GeneratedClass {" +
             "       public static void GeneratedMethod(Turtle Turtle, ITurtlePresentation Canvas) {\n";
-        static string ScriptPostfix =
+
+        private static string ScriptPostfix =
             "       }" +
             "   }" +
             "}";
 
-        static string assemblyName = "generated.dll";
-        static string generatedAssemblyPath = Path.Combine(Directory.GetCurrentDirectory(), assemblyName);
-
+        private static string assemblyName = "generated.dll";
+        private static string generatedAssemblyPath = Path.Combine(Directory.GetCurrentDirectory(), assemblyName);
 
         public Action<Turtle, ITurtlePresentation> CompileTurtleCommands(string script)
         {
@@ -67,7 +66,7 @@ namespace Zolwik.Compiler
             if (emittedResult.Success)
             {
                 var generatedAssembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(generatedAssemblyPath);
-                return 
+                return
                     generatedAssembly.GetType("Generated.GeneratedClass")
                     .GetMethod("GeneratedMethod")
                     .CreateDelegate(typeof(Action<Turtle, ITurtlePresentation>))
@@ -86,6 +85,6 @@ namespace Zolwik.Compiler
             return null;
         }
 
-        SourceText ComposeSource(string script) => SourceText.From(string.Concat(ScriptPrefix, script, ScriptPostfix), Encoding.UTF8);
+        private SourceText ComposeSource(string script) => SourceText.From(string.Concat(ScriptPrefix, script, ScriptPostfix), Encoding.UTF8);
     }
 }
