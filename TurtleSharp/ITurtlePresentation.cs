@@ -18,6 +18,8 @@
 
         void ToggleTurtleVisibility(Turtle turtle);
 
+        void TurtleChangeBrush(Turtle turtle, string color);
+
         void Clear();
     }
 }

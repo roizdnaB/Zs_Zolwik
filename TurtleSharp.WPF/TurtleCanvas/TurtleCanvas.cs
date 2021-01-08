@@ -11,6 +11,7 @@ namespace TurtleSharp.WPF
         private Polygon _turtleRep = null;
         private double _turtleRotation = 0;
         private double _lineRotation = 0;
+        private Brush _brushColor = Brushes.Black;
 
         public void Clear()
         {
@@ -31,6 +32,9 @@ namespace TurtleSharp.WPF
 
             //Make shell green
             _turtleRep.FillRule = FillRule.Nonzero;
+
+            //Set the brush color
+            _brushColor = Brushes.Black;
 
             //Set the rotation values
             _turtleRotation = 0;
@@ -89,10 +93,11 @@ namespace TurtleSharp.WPF
                 //Create a line
                 Polyline polyline = new Polyline();
                 polyline.StrokeThickness = turtle.PenSize;
-                polyline.Stroke = Brushes.Black;
+                polyline.Stroke = _brushColor;
                 polyline.Points.Add(new Point(lineStartX, lineStartY));
                 polyline.Points.Add(new Point(trueLineEndX, trueLineEndY));
 
+                //Set a new position for turtle
                 this.RelocateTurtle(turtle, trueLineEndX, trueLineEndY);
 
                 //Show the line
@@ -113,7 +118,6 @@ namespace TurtleSharp.WPF
             double angle = (Math.PI * -degrees) / 180.0;
 
             //Set the rotation variables
-
             //If degrees isn't 0 - set the angle, otherwise set the turtle's rotation to line rotation
             if (degrees != 0)
                 _turtleRotation = angle;
@@ -140,6 +144,24 @@ namespace TurtleSharp.WPF
             }
         }
 
+        public void TurtleChangeBrush(Turtle turtle, string color)
+        {
+            if (color == "Red")
+                _brushColor = Brushes.Red;
+            else if (color == "Green")
+                _brushColor = Brushes.Green;
+            else if (color == "Yellow")
+                _brushColor = Brushes.Yellow;
+            else if (color == "Blue")
+                _brushColor = Brushes.Blue;
+            else if (color == "Purple")
+                _brushColor = Brushes.Purple;
+            else if (color == "Black")
+                _brushColor = Brushes.Black;
+            else
+                return;
+        }
+
         //Method calculating a new point X - helper method for Rotate and moving forward/backward
         private double newPointX(double x, double xs, double y, double ys, double sin, double cos)
         {
@@ -155,7 +177,7 @@ namespace TurtleSharp.WPF
         //Method relocating the turtle with new tail's point
         private void RelocateTurtle(Turtle turtle, double newCenterX, double newCenterY)
         {
-            //Calculate the coords of the middle of the canvas and rotation value
+            //Set the center point (The coords of the tail)
             var xCenter = newCenterX;
             var yCenter = newCenterY;
 
