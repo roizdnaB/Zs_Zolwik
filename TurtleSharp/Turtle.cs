@@ -65,7 +65,6 @@ namespace TurtleSharp
                 Forward(sideLength);
                 Rotate(90);
                 Forward(sideLength);
-                Rotate(90);
             }
         }
 
@@ -74,11 +73,10 @@ namespace TurtleSharp
             if (IsPlacedOnSomething)
             {
                 Forward(sideLength);
-                Rotate(60);
+                Rotate(120);
                 Forward(sideLength);
-                Rotate(60);
+                Rotate(120);
                 Forward(sideLength);
-                Rotate(60);
             }
         }
 
