@@ -151,6 +151,7 @@ namespace TurtleSharp.WPF
 
         public void TurtleChangeBrush(Turtle turtle, string color)
         {
+            //TODO: Change ifs to enums or something
             if (color == "Red")
                 _brushColor = Brushes.Red;
             else if (color == "Green")
