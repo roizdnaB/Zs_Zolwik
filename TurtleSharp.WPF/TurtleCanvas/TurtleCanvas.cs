@@ -107,9 +107,14 @@ namespace TurtleSharp.WPF
 
         public void TurtleReset(Turtle turtle)
         {
+            //Save the current color and apply it after placing turtle againt
+            var color = _brushColor;
+
             //Delete the turtle from Canvas and add a new one
             this.RemoveTurtle(turtle);
             this.PlaceTurtle(turtle);
+
+            _brushColor = color;
         }
 
         public void TurtleRotate(Turtle turtle, double degrees)
