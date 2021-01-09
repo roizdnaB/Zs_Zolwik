@@ -40,15 +40,21 @@ namespace Zolwik.ViewModels
             //placeholder
         }
 
+        private CroppedBitmap bitmapHelper()
+        {
+            RenderTargetBitmap rtb = new RenderTargetBitmap(500, 500, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+            rtb.Render((System.Windows.Media.Visual)_canvas);
+
+            var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+
+            return crop;
+        }
+
         private void _saveAsBTM(object path)
         {
             string FilePath = path as string;
 
-            RenderTargetBitmap rtb = new RenderTargetBitmap(500,
-    500, 96d, 96d, System.Windows.Media.PixelFormats.Default);
-            rtb.Render((System.Windows.Media.Visual)_canvas);
-
-            var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+            var crop = bitmapHelper();
 
             BitmapEncoder btmEncoder = new BmpBitmapEncoder();
             btmEncoder.Frames.Add(BitmapFrame.Create(crop));
@@ -62,12 +68,8 @@ namespace Zolwik.ViewModels
         private void _saveAsJPG(object path)
         {
             string FilePath = path as string;
-
-            RenderTargetBitmap rtb = new RenderTargetBitmap(500,
-    500, 96d, 96d, System.Windows.Media.PixelFormats.Default);
-            rtb.Render((System.Windows.Media.Visual)_canvas);
-
-            var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+            //Nie działa dobrze
+            var crop = bitmapHelper();
 
             BitmapEncoder jpgEncoder = new JpegBitmapEncoder();
             jpgEncoder.Frames.Add(BitmapFrame.Create(crop));
@@ -82,11 +84,7 @@ namespace Zolwik.ViewModels
         {
             string FilePath = path as string;
 
-            RenderTargetBitmap rtb = new RenderTargetBitmap(500,
-    500, 96d, 96d, System.Windows.Media.PixelFormats.Default);
-            rtb.Render((System.Windows.Media.Visual)_canvas);
-
-            var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+            var crop = bitmapHelper();
 
             BitmapEncoder pngEncoder = new JpegBitmapEncoder();
             pngEncoder.Frames.Add(BitmapFrame.Create(crop));
