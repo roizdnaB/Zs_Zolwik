@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using MVVM.ViewModel;
+using System;
 using System.IO;
 using System.Windows;
 using TurtleSharp;
@@ -26,6 +27,7 @@ namespace Zolwik.ViewModels
         public RelayCommand CopyText { get; private set; }
         public RelayCommand Run { get; private set; }
         public RelayCommand About { get; private set; }
+        public RelayCommand ShowExampleCode { get; private set; }
 
         private void _loadTextFromFileCommand(object path)
         {
@@ -55,6 +57,14 @@ namespace Zolwik.ViewModels
             File.WriteAllText(Path, Text);
         }
 
+        private void _showExampleCode(object fileName)
+        {
+            string File = fileName.ToString();
+            string FilePath = $"{Environment.GetEnvironmentVariable("AppData")}\\Zolwik\\Examples\\{File}.txt";
+            _canvas.Clear();
+            _loadTextFromFileCommand(FilePath);
+        }
+
         private void _copyTextCommand()
         {
             Clipboard.Clear();
@@ -79,6 +89,7 @@ namespace Zolwik.ViewModels
             SaveAsTextFromFile = new RelayCommand(arg => _saveAsTextFromFileCommand(arg));
             CopyText = new RelayCommand(arg => _copyTextCommand());
             About = new RelayCommand(arg => _aboutCommand());
+            ShowExampleCode = new RelayCommand(arg => _showExampleCode(arg));
             Run = new RelayCommand(
                 arg =>
                 {

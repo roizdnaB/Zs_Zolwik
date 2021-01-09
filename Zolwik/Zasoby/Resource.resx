@@ -123,11 +123,32 @@
   <data name="background" xml:space="preserve">
     <value>_Background</value>
   </data>
+  <data name="backward" xml:space="preserve">
+    <value>Backward</value>
+  </data>
+  <data name="basic_functions" xml:space="preserve">
+    <value>Basic functions</value>
+  </data>
+  <data name="circle" xml:space="preserve">
+    <value>Circle</value>
+  </data>
+  <data name="curve" xml:space="preserve">
+    <value>Curve</value>
+  </data>
   <data name="dark" xml:space="preserve">
     <value>_Dark</value>
   </data>
   <data name="default" xml:space="preserve">
     <value>_Default</value>
+  </data>
+  <data name="examples" xml:space="preserve">
+    <value>_Examples</value>
+  </data>
+  <data name="forward" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="for_plus_rot" xml:space="preserve">
+    <value>Forward + Rotate</value>
   </data>
   <data name="image" xml:space="preserve">
     <value>_Image</value>
@@ -137,6 +158,15 @@
   </data>
   <data name="open" xml:space="preserve">
     <value>_Open</value>
+  </data>
+  <data name="other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="rectangle" xml:space="preserve">
+    <value>Rectangle</value>
+  </data>
+  <data name="rhomboid" xml:space="preserve">
+    <value>Rhomboid</value>
   </data>
   <data name="run" xml:space="preserve">
     <value>_Run</value>
@@ -153,7 +183,19 @@
   <data name="settings" xml:space="preserve">
     <value>_Settings</value>
   </data>
+  <data name="shapes" xml:space="preserve">
+    <value>Shapes</value>
+  </data>
+  <data name="square" xml:space="preserve">
+    <value>Square</value>
+  </data>
   <data name="title" xml:space="preserve">
     <value>Zolwik</value>
+  </data>
+  <data name="trapezium" xml:space="preserve">
+    <value>Trapezium</value>
+  </data>
+  <data name="triangle" xml:space="preserve">
+    <value>Triangle</value>
   </data>
 </root>

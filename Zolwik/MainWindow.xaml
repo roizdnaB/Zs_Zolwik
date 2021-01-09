@@ -61,7 +61,23 @@
                         <MenuItem Header="{x:Static resx:Resource.dark}" IsCheckable="True" IsChecked="False" x:Name="MenuItem_Dark" vm:MenuItemExtensions.GroupName="someGroup" />
                     </MenuItem>
                 </MenuItem>
-                    <MenuItem Header="{x:Static resx:Resource.about}" Command="{Binding About}">
+                <MenuItem Header="{x:Static resx:Resource.about}" Command="{Binding About}">
+                </MenuItem>
+                <MenuItem Header="{x:Static resx:Resource.examples}">
+                    <MenuItem Header="{x:Static resx:Resource.basic_functions}">
+                        <MenuItem Header="{x:Static resx:Resource.forward}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.forward}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.backward}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.backward}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.for_plus_rot}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.for_plus_rot}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.curve}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.curve}"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="{x:Static resx:Resource.shapes}">
+                        <MenuItem Header="{x:Static resx:Resource.circle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.circle}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.square}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.square}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.triangle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangle}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.rectangle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.rectangle}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.rhomboid}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.rhomboid}"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="{x:Static resx:Resource.other}"></MenuItem>
                 </MenuItem>
             </Menu>
         </DockPanel>

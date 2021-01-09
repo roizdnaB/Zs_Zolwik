@@ -97,11 +97,74 @@ namespace Zolwik.Zasoby {
         }
         
         /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Backward.
+        /// </summary>
+        public static string backward {
+            get {
+                return ResourceManager.GetString("backward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Basic functions.
+        /// </summary>
+        public static string basic_functions {
+            get {
+                return ResourceManager.GetString("basic_functions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Circle.
+        /// </summary>
+        public static string circle {
+            get {
+                return ResourceManager.GetString("circle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Curve.
+        /// </summary>
+        public static string curve {
+            get {
+                return ResourceManager.GetString("curve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu _Dark.
         /// </summary>
         public static string dark {
             get {
                 return ResourceManager.GetString("dark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu _Examples.
+        /// </summary>
+        public static string examples {
+            get {
+                return ResourceManager.GetString("examples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Forward + Rotate.
+        /// </summary>
+        public static string for_plus_rot {
+            get {
+                return ResourceManager.GetString("for_plus_rot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Forward.
+        /// </summary>
+        public static string forward {
+            get {
+                return ResourceManager.GetString("forward", resourceCulture);
             }
         }
         
@@ -120,6 +183,33 @@ namespace Zolwik.Zasoby {
         public static string open {
             get {
                 return ResourceManager.GetString("open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Other.
+        /// </summary>
+        public static string other {
+            get {
+                return ResourceManager.GetString("other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Rectangle.
+        /// </summary>
+        public static string rectangle {
+            get {
+                return ResourceManager.GetString("rectangle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Rhomboid.
+        /// </summary>
+        public static string rhomboid {
+            get {
+                return ResourceManager.GetString("rhomboid", resourceCulture);
             }
         }
         
@@ -169,11 +259,47 @@ namespace Zolwik.Zasoby {
         }
         
         /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Shapes.
+        /// </summary>
+        public static string shapes {
+            get {
+                return ResourceManager.GetString("shapes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Square.
+        /// </summary>
+        public static string square {
+            get {
+                return ResourceManager.GetString("square", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu Zolwik.
         /// </summary>
         public static string title {
             get {
                 return ResourceManager.GetString("title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Trapezium.
+        /// </summary>
+        public static string trapezium {
+            get {
+                return ResourceManager.GetString("trapezium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Triangle.
+        /// </summary>
+        public static string triangle {
+            get {
+                return ResourceManager.GetString("triangle", resourceCulture);
             }
         }
     }
