@@ -49,7 +49,7 @@
                     <MenuItem Header="{x:Static resx:Resource.save}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
                     <MenuItem Header="{x:Static resx:Resource.saveAs}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
                     <MenuItem Header="{x:Static resx:Resource.export}">
-                        <MenuItem Header="{x:Static resx:Resource.to_jpg}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_jpg}" Command="{Binding SaveAsJPG}"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.to_png}"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.to_btm}"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.to_svg}"></MenuItem>

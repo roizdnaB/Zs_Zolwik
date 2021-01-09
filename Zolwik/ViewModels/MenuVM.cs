@@ -4,6 +4,7 @@ using MVVM.ViewModel;
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using TurtleSharp;
 using Zolwik.Compiler;
 using Zolwik.DialogBoxes;
@@ -28,6 +29,25 @@ namespace Zolwik.ViewModels
         public RelayCommand Run { get; private set; }
         public RelayCommand About { get; private set; }
         public RelayCommand ShowExampleCode { get; private set; }
+        public RelayCommand SaveAsJPG { get; private set; }
+
+        private void _saveAsJPG()
+        {
+            
+            RenderTargetBitmap rtb = new RenderTargetBitmap(6000,
+    6000, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+            rtb.Render((System.Windows.Media.Visual)_canvas);
+
+            var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(crop));
+
+            using (var fs = File.OpenWrite("turtle.png"))
+            {
+                pngEncoder.Save(fs);
+            }
+        }
 
         private void _loadTextFromFileCommand(object path)
         {
@@ -90,6 +110,7 @@ namespace Zolwik.ViewModels
             CopyText = new RelayCommand(arg => _copyTextCommand());
             About = new RelayCommand(arg => _aboutCommand());
             ShowExampleCode = new RelayCommand(arg => _showExampleCode(arg));
+            SaveAsJPG = new RelayCommand(arg => _saveAsJPG());
             Run = new RelayCommand(
                 arg =>
                 {
