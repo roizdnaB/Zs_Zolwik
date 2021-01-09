@@ -42,11 +42,20 @@
             FilterIndex="0" />
         
         <db:SaveFileDialogBox
-            x:Name="SaveImage"
-            Filter="Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF"
+            x:Name="SaveImageJPG"
+            Filter="JPEG Image (.jpeg)|*.jpeg"
             DefaultExtension="jpg"
+            FilePath="image.jpg"
             FilterIndex="0"
             CommandFileOk="{Binding SaveAsJPG}"
+            />
+        <db:SaveFileDialogBox
+            x:Name="SaveImagePNG"
+            Filter="PNG Image (.png)|*.png"
+            DefaultExtension="png"
+            FilePath="image.png"
+            FilterIndex="0"
+            CommandFileOk="{Binding SaveAsPNG}"
             />
 
         <DockPanel Grid.ColumnSpan="2">
@@ -57,8 +66,8 @@
                     <MenuItem Header="{x:Static resx:Resource.save}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
                     <MenuItem Header="{x:Static resx:Resource.saveAs}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
                     <MenuItem Header="{x:Static resx:Resource.export}">
-                        <MenuItem Header="{x:Static resx:Resource.to_jpg}" Command="{Binding ElementName=SaveImage, Path=Show}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.to_png}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_jpg}" Command="{Binding ElementName=SaveImageJPG, Path=Show}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_png}" Command="{Binding ElementName=SaveImagePNG, Path=Show}"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.to_btm}"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.to_svg}"></MenuItem>
                     </MenuItem>

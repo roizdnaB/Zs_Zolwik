@@ -30,6 +30,7 @@ namespace Zolwik.ViewModels
         public RelayCommand About { get; private set; }
         public RelayCommand ShowExampleCode { get; private set; }
         public RelayCommand SaveAsJPG { get; private set; }
+        public RelayCommand SaveAsPNG { get; private set; }
 
         private void _saveAsJPG(object path)
         {
@@ -47,6 +48,25 @@ namespace Zolwik.ViewModels
             using (var fs = File.OpenWrite(FilePath))
             {
                 jpgEncoder.Save(fs);
+            }
+        }
+
+        private void _saveAsPNG(object path)
+        {
+            string FilePath = path as string;
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap(500,
+    500, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+            rtb.Render((System.Windows.Media.Visual)_canvas);
+
+            var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+
+            BitmapEncoder pngEncoder = new JpegBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(crop));
+
+            using (var fs = File.OpenWrite(FilePath))
+            {
+                pngEncoder.Save(fs);
             }
         }
 
@@ -112,6 +132,7 @@ namespace Zolwik.ViewModels
             About = new RelayCommand(arg => _aboutCommand());
             ShowExampleCode = new RelayCommand(arg => _showExampleCode(arg));
             SaveAsJPG = new RelayCommand(arg => _saveAsJPG(arg));
+            SaveAsPNG = new RelayCommand(arg => _saveAsPNG(arg));
             Run = new RelayCommand(
                 arg =>
                 {
