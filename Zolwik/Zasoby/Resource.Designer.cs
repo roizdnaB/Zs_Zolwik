@@ -151,6 +151,15 @@ namespace Zolwik.Zasoby {
         }
         
         /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Export.
+        /// </summary>
+        public static string export {
+            get {
+                return ResourceManager.GetString("export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu Forward + Rotate.
         /// </summary>
         public static string for_plus_rot {
@@ -241,7 +250,7 @@ namespace Zolwik.Zasoby {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu _Script.
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu _File.
         /// </summary>
         public static string script {
             get {
@@ -282,6 +291,42 @@ namespace Zolwik.Zasoby {
         public static string title {
             get {
                 return ResourceManager.GetString("title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu to Bitmap.
+        /// </summary>
+        public static string to_btm {
+            get {
+                return ResourceManager.GetString("to_btm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu to JPG.
+        /// </summary>
+        public static string to_jpg {
+            get {
+                return ResourceManager.GetString("to_jpg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu to PNG.
+        /// </summary>
+        public static string to_png {
+            get {
+                return ResourceManager.GetString("to_png", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu to SVG.
+        /// </summary>
+        public static string to_svg {
+            get {
+                return ResourceManager.GetString("to_svg", resourceCulture);
             }
         }
         

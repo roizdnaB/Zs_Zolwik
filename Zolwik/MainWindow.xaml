@@ -48,12 +48,12 @@
                     <MenuItem Header="{x:Static resx:Resource.open}" Command ="{Binding ElementName=LoadFile, Path=Show}" />
                     <MenuItem Header="{x:Static resx:Resource.save}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
                     <MenuItem Header="{x:Static resx:Resource.saveAs}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
-                </MenuItem>
-                <MenuItem Header="{x:Static resx:Resource.image}">
-                    <MenuItem Header="{x:Static resx:Resource._new}" />
-                    <MenuItem Header="{x:Static resx:Resource.open}" />
-                    <MenuItem Header="{x:Static resx:Resource.save}" />
-                    <MenuItem Header="{x:Static resx:Resource.saveAs}" />
+                    <MenuItem Header="{x:Static resx:Resource.export}">
+                        <MenuItem Header="{x:Static resx:Resource.to_jpg}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_png}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_btm}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_svg}"></MenuItem>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="{x:Static resx:Resource.settings}">
                     <MenuItem Header="{x:Static resx:Resource.background}">

@@ -144,6 +144,9 @@
   <data name="examples" xml:space="preserve">
     <value>_Examples</value>
   </data>
+  <data name="export" xml:space="preserve">
+    <value>Export</value>
+  </data>
   <data name="forward" xml:space="preserve">
     <value>Forward</value>
   </data>
@@ -178,7 +181,7 @@
     <value>_SaveAs</value>
   </data>
   <data name="script" xml:space="preserve">
-    <value>_Script</value>
+    <value>_File</value>
   </data>
   <data name="settings" xml:space="preserve">
     <value>_Settings</value>
@@ -191,6 +194,18 @@
   </data>
   <data name="title" xml:space="preserve">
     <value>Zolwik</value>
+  </data>
+  <data name="to_btm" xml:space="preserve">
+    <value>to Bitmap</value>
+  </data>
+  <data name="to_jpg" xml:space="preserve">
+    <value>to JPG</value>
+  </data>
+  <data name="to_png" xml:space="preserve">
+    <value>to PNG</value>
+  </data>
+  <data name="to_svg" xml:space="preserve">
+    <value>to SVG</value>
   </data>
   <data name="trapezium" xml:space="preserve">
     <value>Trapezium</value>
