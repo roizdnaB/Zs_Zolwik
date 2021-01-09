@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace TurtleSharp.WPF
@@ -91,17 +92,30 @@ namespace TurtleSharp.WPF
                     Math.Round(Math.Sin(_lineRotation), 4), Math.Round(Math.Cos(_lineRotation), 4));
 
                 //Create a line
-                Polyline polyline = new Polyline();
-                polyline.StrokeThickness = turtle.PenSize;
-                polyline.Stroke = _brushColor;
-                polyline.Points.Add(new Point(lineStartX, lineStartY));
-                polyline.Points.Add(new Point(trueLineEndX, trueLineEndY));
+                Line line = new Line();
+                line.StrokeThickness = turtle.PenSize;
+                line.Stroke = _brushColor;
 
+                line.X1 = lineStartX;
+                line.Y1 = lineStartY;
+
+
+                var sb = new Storyboard();
+                var animateX = new DoubleAnimation(line.X2, trueLineEndX, new Duration(new TimeSpan(0, 0, 1)));
+                var animateY = new DoubleAnimation(line.Y2, trueLineEndY, new Duration(new TimeSpan(0, 0, 1)));
+
+                Storyboard.SetTargetProperty(animateX, new PropertyPath("(Line.X2)"));
+                Storyboard.SetTargetProperty(animateY, new PropertyPath("(Line.Y2)"));
+
+                sb.Children.Add(animateX);
+                sb.Children.Add(animateY);
                 //Set a new position for turtle
                 this.RelocateTurtle(turtle, trueLineEndX, trueLineEndY);
 
                 //Show the line
-                this.Children.Add(polyline);
+                this.Children.Add(line);
+
+                line.BeginStoryboard(sb);
             }
         }
 
