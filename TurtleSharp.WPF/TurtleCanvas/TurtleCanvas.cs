@@ -13,6 +13,7 @@ namespace TurtleSharp.WPF
         private double _turtleRotation = 0;
         private double _lineRotation = 0;
         private Brush _brushColor = Brushes.Black;
+        private double _brushSize = 1;
 
         public void Clear()
         {
@@ -93,7 +94,7 @@ namespace TurtleSharp.WPF
 
                 //Create a line
                 Line line = new Line();
-                line.StrokeThickness = turtle.PenSize;
+                line.StrokeThickness = _brushSize;
                 line.Stroke = _brushColor;
 
                 line.X1 = lineStartX;
@@ -121,14 +122,16 @@ namespace TurtleSharp.WPF
 
         public void TurtleReset(Turtle turtle)
         {
-            //Save the current color and apply it after placing turtle againt
+            //Save the current color and size, and apply it after placing turtle againt
             var color = _brushColor;
+            var size = _brushSize;
 
             //Delete the turtle from Canvas and add a new one
             this.RemoveTurtle(turtle);
             this.PlaceTurtle(turtle);
 
             _brushColor = color;
+            _brushSize = size;
         }
 
         public void TurtleRotate(Turtle turtle, double degrees)
@@ -180,6 +183,11 @@ namespace TurtleSharp.WPF
                 _brushColor = Brushes.Black;
             else
                 return;
+        }
+
+        public void TurtleChangeBrushSize(Turtle turtle, double size)
+        {
+            _brushSize = size;
         }
 
         //Method calculating a new point X - helper method for Rotate and moving forward/backward

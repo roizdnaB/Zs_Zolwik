@@ -46,6 +46,8 @@ namespace TurtleSharp
 
         public void ChangeBrush(string color) => Presentation?.TurtleChangeBrush(this, color);
 
+        public void ChangeBrushSize(double size) => Presentation?.TurtleChangeBrushSize(this, size);
+
         public void Forward(double distance) => Presentation?.TurtleForward(this, distance);
 
         public void Backward(double distance) => Presentation?.TurtleBackward(this, distance);
