@@ -302,5 +302,32 @@ namespace Zolwik.Zasoby {
                 return ResourceManager.GetString("triangle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Triangles.
+        /// </summary>
+        public static string triangles {
+            get {
+                return ResourceManager.GetString("triangles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Colorful Triangles.
+        /// </summary>
+        public static string triangles_color {
+            get {
+                return ResourceManager.GetString("triangles_color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Triangle in loop.
+        /// </summary>
+        public static string triangles_loop {
+            get {
+                return ResourceManager.GetString("triangles_loop", resourceCulture);
+            }
+        }
     }
 }

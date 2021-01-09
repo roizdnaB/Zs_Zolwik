@@ -77,7 +77,11 @@
                         <MenuItem Header="{x:Static resx:Resource.rectangle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.rectangle}"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.rhomboid}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.rhomboid}"></MenuItem>
                     </MenuItem>
-                    <MenuItem Header="{x:Static resx:Resource.other}"></MenuItem>
+                    <MenuItem Header="{x:Static resx:Resource.other}">
+                        <MenuItem Header="{x:Static resx:Resource.triangles}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangles}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.triangles_color}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangles_color}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.triangles_loop}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangles_loop}"></MenuItem>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
         </DockPanel>

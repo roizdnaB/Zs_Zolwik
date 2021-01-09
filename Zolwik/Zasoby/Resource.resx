@@ -198,4 +198,13 @@
   <data name="triangle" xml:space="preserve">
     <value>Triangle</value>
   </data>
+  <data name="triangles" xml:space="preserve">
+    <value>Triangles</value>
+  </data>
+  <data name="triangles_color" xml:space="preserve">
+    <value>Colorful Triangles</value>
+  </data>
+  <data name="triangles_loop" xml:space="preserve">
+    <value>Triangle in loop</value>
+  </data>
 </root>
