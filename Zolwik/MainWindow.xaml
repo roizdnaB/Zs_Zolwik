@@ -57,6 +57,19 @@
             FilterIndex="0"
             CommandFileOk="{Binding SaveAsPNG}"
             />
+        <db:SaveFileDialogBox
+            x:Name="SaveImageBTM"
+            Filter="Bitmap Image (.bmp)|*.bmp"
+            FilePath="image.bmp"
+            FilterIndex="0"
+            CommandFileOk="{Binding SaveAsBTM}"
+            />
+        <db:SaveFileDialogBox
+            x:Name="SaveImageSVG"
+            Filter="SVG Image (.svg)|*.svg"
+            FilePath="image.svg"
+            FilterIndex="0"
+            CommandFileOk="{Binding SaveAsSVG}"/>
 
         <DockPanel Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top" Background="LightGray" BorderThickness="1" BorderBrush="Black">
@@ -68,8 +81,8 @@
                     <MenuItem Header="{x:Static resx:Resource.export}">
                         <MenuItem Header="{x:Static resx:Resource.to_jpg}" Command="{Binding ElementName=SaveImageJPG, Path=Show}"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.to_png}" Command="{Binding ElementName=SaveImagePNG, Path=Show}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.to_btm}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.to_svg}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_btm}" Command="{Binding ElementName=SaveImageBTM, Path=Show}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_svg}" Command="{Binding ElementName=SaveImageSVG, Path=Show}"></MenuItem>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="{x:Static resx:Resource.settings}">

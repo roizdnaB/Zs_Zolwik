@@ -31,6 +31,33 @@ namespace Zolwik.ViewModels
         public RelayCommand ShowExampleCode { get; private set; }
         public RelayCommand SaveAsJPG { get; private set; }
         public RelayCommand SaveAsPNG { get; private set; }
+        public RelayCommand SaveAsSVG { get; private set; }
+        public RelayCommand SaveAsBTM { get; private set; }
+
+        private void _saveAsSVG(object path)
+        {
+            string FilePath = path as string;
+            //placeholder
+        }
+
+        private void _saveAsBTM(object path)
+        {
+            string FilePath = path as string;
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap(500,
+    500, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+            rtb.Render((System.Windows.Media.Visual)_canvas);
+
+            var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+
+            BitmapEncoder btmEncoder = new BmpBitmapEncoder();
+            btmEncoder.Frames.Add(BitmapFrame.Create(crop));
+
+            using (var fs = File.OpenWrite(FilePath))
+            {
+                btmEncoder.Save(fs);
+            }
+        }
 
         private void _saveAsJPG(object path)
         {
@@ -117,7 +144,7 @@ namespace Zolwik.ViewModels
             var dialogBox = new MessageDialogBox()
             {
                 Caption = "O projekcie",
-                Icon = System.Windows.MessageBoxImage.Warning,
+                Icon = System.Windows.MessageBoxImage.Information,
                 Buttons = System.Windows.MessageBoxButton.OK
             };
             dialogBox.showMessageBox("Projekt zaliczeniowy z przedmiotu Inżynieria Oprogramowania. \n\n Natalia Szarek, Krzysztof Kłak, Daniel Jambor");
@@ -133,18 +160,37 @@ namespace Zolwik.ViewModels
             ShowExampleCode = new RelayCommand(arg => _showExampleCode(arg));
             SaveAsJPG = new RelayCommand(arg => _saveAsJPG(arg));
             SaveAsPNG = new RelayCommand(arg => _saveAsPNG(arg));
-            Run = new RelayCommand(
-                arg =>
-                {
-                    _canvas.Clear();
-                    CSharpScript.RunAsync(
-                        Text,
-                        globals: new TurtleCanvasPair { Turtle = Turtle, Canvas = TurtlePresentationHook },
-                        globalsType: typeof(TurtleCanvasPair),
-                        options: ScriptOptions.Default.WithEmitDebugInformation(true)
-                    );
-                }
-            );
+            SaveAsSVG = new RelayCommand(arg => _saveAsSVG(arg));
+            SaveAsBTM = new RelayCommand(arg => _saveAsBTM(arg));
+            
+                Run = new RelayCommand(
+                    arg =>
+                    {
+                        _canvas.Clear();
+                        try
+                        {
+                            CSharpScript.RunAsync(
+                                Text,
+                                globals: new TurtleCanvasPair { Turtle = Turtle, Canvas = TurtlePresentationHook },
+                                globalsType: typeof(TurtleCanvasPair),
+                                options: ScriptOptions.Default.WithEmitDebugInformation(true)
+                            );
+                        }
+                        catch (CompilationErrorException e)
+                        {
+                            var dialogBox = new MessageDialogBox()
+                            {
+                                Caption = "Blad",
+                                Icon = System.Windows.MessageBoxImage.Warning,
+                                Buttons = System.Windows.MessageBoxButton.OK
+                            };
+                            dialogBox.showMessageBox(e.Message);
+
+                        }
+                    }
+                );
+            
+            
         }
     }
 
