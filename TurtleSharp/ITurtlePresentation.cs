@@ -20,6 +20,8 @@
 
         void TurtleChangeBrush(Turtle turtle, string color);
 
+        void TurtleChangeBrushSize(Turtle turtle, double size);
+
         void Clear();
     }
 }

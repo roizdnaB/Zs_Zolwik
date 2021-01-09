@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace TurtleSharp.WPF
@@ -12,6 +13,7 @@ namespace TurtleSharp.WPF
         private double _turtleRotation = 0;
         private double _lineRotation = 0;
         private Brush _brushColor = Brushes.Black;
+        private double _brushSize = 1;
 
         public void Clear()
         {
@@ -91,30 +93,45 @@ namespace TurtleSharp.WPF
                     Math.Round(Math.Sin(_lineRotation), 4), Math.Round(Math.Cos(_lineRotation), 4));
 
                 //Create a line
-                Polyline polyline = new Polyline();
-                polyline.StrokeThickness = turtle.PenSize;
-                polyline.Stroke = _brushColor;
-                polyline.Points.Add(new Point(lineStartX, lineStartY));
-                polyline.Points.Add(new Point(trueLineEndX, trueLineEndY));
+                Line line = new Line();
+                line.StrokeThickness = _brushSize;
+                line.Stroke = _brushColor;
 
+                line.X1 = lineStartX;
+                line.Y1 = lineStartY;
+
+
+                var sb = new Storyboard();
+                var animateX = new DoubleAnimation(line.X2, trueLineEndX, new Duration(new TimeSpan(0, 0, 1)));
+                var animateY = new DoubleAnimation(line.Y2, trueLineEndY, new Duration(new TimeSpan(0, 0, 1)));
+
+                Storyboard.SetTargetProperty(animateX, new PropertyPath("(Line.X2)"));
+                Storyboard.SetTargetProperty(animateY, new PropertyPath("(Line.Y2)"));
+
+                sb.Children.Add(animateX);
+                sb.Children.Add(animateY);
                 //Set a new position for turtle
                 this.RelocateTurtle(turtle, trueLineEndX, trueLineEndY);
 
                 //Show the line
-                this.Children.Add(polyline);
+                this.Children.Add(line);
+
+                line.BeginStoryboard(sb);
             }
         }
 
         public void TurtleReset(Turtle turtle)
         {
-            //Save the current color and apply it after placing turtle againt
+            //Save the current color and size, and apply it after placing turtle againt
             var color = _brushColor;
+            var size = _brushSize;
 
             //Delete the turtle from Canvas and add a new one
             this.RemoveTurtle(turtle);
             this.PlaceTurtle(turtle);
 
             _brushColor = color;
+            _brushSize = size;
         }
 
         public void TurtleRotate(Turtle turtle, double degrees)
@@ -166,6 +183,11 @@ namespace TurtleSharp.WPF
                 _brushColor = Brushes.Black;
             else
                 return;
+        }
+
+        public void TurtleChangeBrushSize(Turtle turtle, double size)
+        {
+            _brushSize = size;
         }
 
         //Method calculating a new point X - helper method for Rotate and moving forward/backward
