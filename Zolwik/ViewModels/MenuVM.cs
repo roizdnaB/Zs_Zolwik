@@ -31,21 +31,22 @@ namespace Zolwik.ViewModels
         public RelayCommand ShowExampleCode { get; private set; }
         public RelayCommand SaveAsJPG { get; private set; }
 
-        private void _saveAsJPG()
+        private void _saveAsJPG(object path)
         {
-            
-            RenderTargetBitmap rtb = new RenderTargetBitmap(6000,
-    6000, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+            string FilePath = path as string;
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap(500,
+    500, 96d, 96d, System.Windows.Media.PixelFormats.Default);
             rtb.Render((System.Windows.Media.Visual)_canvas);
 
             var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
 
-            BitmapEncoder pngEncoder = new PngBitmapEncoder();
-            pngEncoder.Frames.Add(BitmapFrame.Create(crop));
+            BitmapEncoder jpgEncoder = new JpegBitmapEncoder();
+            jpgEncoder.Frames.Add(BitmapFrame.Create(crop));
 
-            using (var fs = File.OpenWrite("turtle.png"))
+            using (var fs = File.OpenWrite(FilePath))
             {
-                pngEncoder.Save(fs);
+                jpgEncoder.Save(fs);
             }
         }
 
@@ -110,7 +111,7 @@ namespace Zolwik.ViewModels
             CopyText = new RelayCommand(arg => _copyTextCommand());
             About = new RelayCommand(arg => _aboutCommand());
             ShowExampleCode = new RelayCommand(arg => _showExampleCode(arg));
-            SaveAsJPG = new RelayCommand(arg => _saveAsJPG());
+            SaveAsJPG = new RelayCommand(arg => _saveAsJPG(arg));
             Run = new RelayCommand(
                 arg =>
                 {

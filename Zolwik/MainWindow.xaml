@@ -40,6 +40,14 @@
             CommandFileOk="{Binding SaveTextFromFile}"
             DefaultExtension="txt"
             FilterIndex="0" />
+        
+        <db:SaveFileDialogBox
+            x:Name="SaveImage"
+            Filter="Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF"
+            DefaultExtension="jpg"
+            FilterIndex="0"
+            CommandFileOk="{Binding SaveAsJPG}"
+            />
 
         <DockPanel Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top" Background="LightGray" BorderThickness="1" BorderBrush="Black">
@@ -49,7 +57,7 @@
                     <MenuItem Header="{x:Static resx:Resource.save}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
                     <MenuItem Header="{x:Static resx:Resource.saveAs}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
                     <MenuItem Header="{x:Static resx:Resource.export}">
-                        <MenuItem Header="{x:Static resx:Resource.to_jpg}" Command="{Binding SaveAsJPG}"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_jpg}" Command="{Binding ElementName=SaveImage, Path=Show}"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.to_png}"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.to_btm}"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.to_svg}"></MenuItem>
