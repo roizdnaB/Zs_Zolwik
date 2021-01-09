@@ -2,7 +2,9 @@
 using Microsoft.CodeAnalysis.Scripting;
 using MVVM.ViewModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using TurtleSharp;
 using Zolwik.Compiler;
 using Zolwik.DialogBoxes;
@@ -24,7 +26,7 @@ namespace Zolwik.ViewModels
         public RelayCommand SaveTextFromFile { get; private set; }
         public RelayCommand SaveAsTextFromFile { get; private set; }
         public RelayCommand CopyText { get; private set; }
-        public RelayCommand Run { get; private set; }
+        public ICommand Run { get; private set; }
         public RelayCommand About { get; private set; }
 
         private void _loadTextFromFileCommand(object path)
@@ -79,17 +81,17 @@ namespace Zolwik.ViewModels
             SaveAsTextFromFile = new RelayCommand(arg => _saveAsTextFromFileCommand(arg));
             CopyText = new RelayCommand(arg => _copyTextCommand());
             About = new RelayCommand(arg => _aboutCommand());
-            Run = new RelayCommand(
-                arg =>
-                {
-                    _canvas.Clear();
-                    CSharpScript.RunAsync(
-                        Text,
-                        globals: new TurtleCanvasPair { Turtle = Turtle, Canvas = TurtlePresentationHook },
-                        globalsType: typeof(TurtleCanvasPair),
-                        options: ScriptOptions.Default.WithEmitDebugInformation(true)
-                    );
-                }
+            Run = new RelayCommand(arg => CompileAndRun());
+        }
+
+        private void CompileAndRun()
+        {
+            _canvas.Clear();
+            CSharpScript.RunAsync(
+                Text,
+                globals: new TurtleCanvasPair { Turtle = Turtle, Canvas = TurtlePresentationHook },
+                globalsType: typeof(TurtleCanvasPair),
+                options: ScriptOptions.Default.WithEmitDebugInformation(true)
             );
         }
     }

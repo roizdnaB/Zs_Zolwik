@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using TurtleSharp.WPF.Helpers;
 
 namespace TurtleSharp.WPF
 {
@@ -14,6 +18,11 @@ namespace TurtleSharp.WPF
         private double _lineRotation = 0;
         private Brush _brushColor = Brushes.Black;
 
+        private double _turtleLeft = 0;
+        private double _turtleTop = 0;
+
+        public AnimationQueue AnimationQueue = new AnimationQueue();
+
         public void Clear()
         {
             //Clear the Canvas
@@ -21,16 +30,22 @@ namespace TurtleSharp.WPF
 
             //Set turtle to null
             _turtleRep = null;
+            _turtleRotation = 0;
+            _turtleTop = 0;
+            _turtleLeft = 0;
+            _lineRotation = 0;
         }
 
         //Place the turtle on the screen
         public void PlaceTurtle(Turtle turtle)
         {
             _turtleRep = new Polygon();
+            SetLeft(_turtleRep, 0);
+            SetTop(_turtleRep, 0);
             _turtleRep.Fill = Brushes.Green;
             _turtleRep.Stroke = Brushes.Black;
             _turtleRep.StrokeThickness = 2;
-
+                
             //Make shell green
             _turtleRep.FillRule = FillRule.Nonzero;
 
@@ -41,189 +56,39 @@ namespace TurtleSharp.WPF
             _turtleRotation = 0;
             _lineRotation = 0;
 
+            this.InitializeTurtle(turtle);
+            
             //Set the shape of the turtle and place it in the middle of the canvas
-            this.RelocateTurtle(turtle, 0, 0);
+            //this.RelocateTurtle(turtle, 0, 0);
 
             //Add to the Canvas
             this.Children.Add(_turtleRep);
         }
 
-        public void RemoveTurtle(Turtle turtle)
+        private void InitializeTurtle(Turtle turtle)
         {
-            //Remove the turtle from the Canvas and set it on null
-            this.Children.Remove(_turtleRep);
-            _turtleRep = null;
-        }
-
-        public void ToggleTurtleVisibility(Turtle turtle)
-        {
-            //Just reverse the bool
-            turtle.IsVisible = turtle.IsVisible;
-        }
-
-        public void TurtleBackward(Turtle turtle, double distance)
-        {
-            //Just reverse the distance value and call the forward method (smart!!!)
-            this.TurtleForward(turtle, -distance);
-            this.TurtleRotate(turtle, _turtleRotation - 180);
-        }
-
-        public void TurtleCurve(Turtle turtle, double radius, double length)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void TurtleForward(Turtle turtle, double distance)
-        {
-            if (_turtleRep != null)
-            {
-                //Get the starting position of turtle (tail)
-                double lineStartX = _turtleRep.Points[0].X;
-                double lineStartY = _turtleRep.Points[0].Y;
-
-                //Get the endpoint of the jurney
-                double lineEndX = _turtleRep.Points[0].X + distance;
-                double lineEndY = _turtleRep.Points[0].Y;
-
-                //Rotate the end point in the same way as the turtle
-                double trueLineEndX = this.newPointX(lineEndX, lineStartX, lineEndY, lineStartY,
-                    Math.Round(Math.Sin(_lineRotation), 4), Math.Round(Math.Cos(_lineRotation), 4));
-                double trueLineEndY = this.newPointY(lineEndX, lineStartX, lineEndY, lineStartY,
-                    Math.Round(Math.Sin(_lineRotation), 4), Math.Round(Math.Cos(_lineRotation), 4));
-
-                //Create a line
-                Line line = new Line();
-                line.StrokeThickness = turtle.PenSize;
-                line.Stroke = _brushColor;
-
-                line.X1 = lineStartX;
-                line.Y1 = lineStartY;
-
-
-                var sb = new Storyboard();
-                var animateX = new DoubleAnimation(line.X2, trueLineEndX, new Duration(new TimeSpan(0, 0, 1)));
-                var animateY = new DoubleAnimation(line.Y2, trueLineEndY, new Duration(new TimeSpan(0, 0, 1)));
-
-                Storyboard.SetTargetProperty(animateX, new PropertyPath("(Line.X2)"));
-                Storyboard.SetTargetProperty(animateY, new PropertyPath("(Line.Y2)"));
-
-                sb.Children.Add(animateX);
-                sb.Children.Add(animateY);
-                //Set a new position for turtle
-                this.RelocateTurtle(turtle, trueLineEndX, trueLineEndY);
-
-                //Show the line
-                this.Children.Add(line);
-
-                line.BeginStoryboard(sb);
-            }
-        }
-
-        public void TurtleReset(Turtle turtle)
-        {
-            //Save the current color and apply it after placing turtle againt
-            var color = _brushColor;
-
-            //Delete the turtle from Canvas and add a new one
-            this.RemoveTurtle(turtle);
-            this.PlaceTurtle(turtle);
-
-            _brushColor = color;
-        }
-
-        public void TurtleRotate(Turtle turtle, double degrees)
-        {
-            //Convert degrees to radiants
-            double angle = (Math.PI * -degrees) / 180.0;
-
-            //Set the rotation variables
-            //If degrees isn't 0 - set the angle, otherwise set the turtle's rotation to line rotation
-            if (degrees != 0)
-                _turtleRotation = angle;
-            else
-                _turtleRotation = _lineRotation;
-
-            _lineRotation += angle;
-
-            //Save the sin and cos values
-            double sinVal = Math.Round(Math.Sin(_turtleRotation), 4);
-            double cosVal = Math.Round(Math.Cos(_turtleRotation), 4);
-
-            //Get the tail coords of the turtle
-            double xTail = _turtleRep.Points[0].X;
-            double yTail = _turtleRep.Points[0].Y;
-
-            for (int i = 0; i < _turtleRep.Points.Count; i++)
-            {
-                //Create a new Point and insert it in the place of old one
-                Point point = _turtleRep.Points[i];
-                point.X = this.newPointX(_turtleRep.Points[i].X, xTail, _turtleRep.Points[i].Y, yTail, sinVal, cosVal);
-                point.Y = this.newPointY(_turtleRep.Points[i].X, xTail, _turtleRep.Points[i].Y, yTail, sinVal, cosVal);
-                _turtleRep.Points[i] = point;
-            }
-        }
-
-        public void TurtleChangeBrush(Turtle turtle, string color)
-        {
-            //TODO: Change ifs to enums or something
-            if (color == "Red")
-                _brushColor = Brushes.Red;
-            else if (color == "Green")
-                _brushColor = Brushes.Green;
-            else if (color == "Yellow")
-                _brushColor = Brushes.Yellow;
-            else if (color == "Blue")
-                _brushColor = Brushes.Blue;
-            else if (color == "Purple")
-                _brushColor = Brushes.Purple;
-            else if (color == "Black")
-                _brushColor = Brushes.Black;
-            else
-                return;
-        }
-
-        //Method calculating a new point X - helper method for Rotate and moving forward/backward
-        private double newPointX(double x, double xs, double y, double ys, double sin, double cos)
-        {
-            return ((x - xs) * cos) - ((y - ys) * sin) + xs;
-        }
-
-        //Method calculating a new point Y - helper method for Rotate and moving forward/backward
-        private double newPointY(double x, double xs, double y, double ys, double sin, double cos)
-        {
-            return ((x - xs) * sin) + ((y - ys) * cos) + ys;
-        }
-
-        //Method relocating the turtle with new tail's point
-        private void RelocateTurtle(Turtle turtle, double newCenterX, double newCenterY)
-        {
-            //Set the center point (The coords of the tail)
-            var xCenter = newCenterX;
-            var yCenter = newCenterY;
-
-            //Set the shape of the turtle
-            Point PointA = new Point(xCenter, yCenter);
-            Point PointB = new Point(xCenter + 4, yCenter - 4);
-            Point PointC = new Point(xCenter + 2, yCenter - 10);
-            Point PointD = new Point(xCenter + 8, yCenter - 8);
-            Point PointE = new Point(xCenter + 12, yCenter - 12);
-            Point PointF = new Point(xCenter + 15, yCenter - 11);
-            Point PointG = new Point(xCenter + 21, yCenter - 14);
-            Point PointH = new Point(xCenter + 21, yCenter - 9);
-            Point PointI = new Point(xCenter + 24, yCenter - 8);
-            Point PointJ = new Point(xCenter + 24, yCenter - 4);
-            Point PointK = new Point(xCenter + 28, yCenter - 4);
-            Point PointL = new Point(xCenter + 32, yCenter);
-            Point PointM = new Point(xCenter + 28, yCenter + 4);
-            Point PointN = new Point(xCenter + 24, yCenter + 4);
-            Point PointO = new Point(xCenter + 24, yCenter + 8);
-            Point PointP = new Point(xCenter + 21, yCenter + 9);
-            Point PointR = new Point(xCenter + 21, yCenter + 14);
-            Point PointS = new Point(xCenter + 15, yCenter + 11);
-            Point PointT = new Point(xCenter + 12, yCenter + 12);
-            Point PointU = new Point(xCenter + 8, yCenter + 8);
-            Point PointW = new Point(xCenter + 2, yCenter + 10);
-            Point PointZ = new Point(xCenter + 4, yCenter + 4);
+            Point PointA = new Point(0, 0);
+            Point PointB = new Point(4, -4);
+            Point PointC = new Point(2, -10);
+            Point PointD = new Point(8, -8);
+            Point PointE = new Point(12,-12);
+            Point PointF = new Point(15,-11);
+            Point PointG = new Point(21, -14);
+            Point PointH = new Point(21, -9);
+            Point PointI = new Point(24, -8);
+            Point PointJ = new Point(24, -4);
+            Point PointK = new Point(28, -4);
+            Point PointL = new Point(32, 0);
+            Point PointM = new Point(28, 4);
+            Point PointN = new Point(24, 4);
+            Point PointO = new Point(24, 8);
+            Point PointP = new Point(21, 9);
+            Point PointR = new Point(21, 14);
+            Point PointS = new Point(15, 11);
+            Point PointT = new Point(12, 12);
+            Point PointU = new Point(8, 8);
+            Point PointW = new Point(2,10);
+            Point PointZ = new Point(4, 4);
 
             //Set the collection of points and add all points to the collection
             PointCollection myPointCollection = new PointCollection();
@@ -261,6 +126,187 @@ namespace TurtleSharp.WPF
 
             //Show the turtle
             _turtleRep.Points = myPointCollection;
+
+            _turtleRep.RenderTransform = new RotateTransform() { CenterX = PointA.X, CenterY = PointA.Y };
+        }
+
+        public void RemoveTurtle(Turtle turtle)
+        {
+            //Remove the turtle from the Canvas and set it to null
+            this.Children.Remove(_turtleRep);
+            _turtleRep = null;
+        }
+
+        public void ToggleTurtleVisibility(Turtle turtle)
+        {
+            //Just reverse the bool
+            turtle.IsVisible = turtle.IsVisible;
+        }
+
+        public void TurtleBackward(Turtle turtle, double distance)
+        {
+            //Just reverse the distance value and call the forward method (smart!!!)
+            this.TurtleForward(turtle, -distance);
+            this.TurtleRotate(turtle, _turtleRotation - 180);
+        }
+
+        public void TurtleCurve(Turtle turtle, double radius, double length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TurtleForward(Turtle turtle, double distance)
+        {
+            if (_turtleRep != null)
+            {
+                //Get the starting position of turtle (tail)
+                double lineStartX = _turtleLeft;
+                double lineStartY = _turtleTop;
+
+                //Get the endpoint of the jurney
+                double lineEndX = lineStartX + distance;
+                double lineEndY = lineStartY;
+
+                //Rotate the end point in the same way as the turtle
+                double trueLineEndX = this.newPointX(lineEndX, lineStartX, lineEndY, lineStartY,
+                    Math.Round(Math.Sin(_lineRotation), 4), Math.Round(Math.Cos(_lineRotation), 4));
+                double trueLineEndY = this.newPointY(lineEndX, lineStartX, lineEndY, lineStartY,
+                    Math.Round(Math.Sin(_lineRotation), 4), Math.Round(Math.Cos(_lineRotation), 4));
+
+                //Create a line
+                Line line = new Line();
+                line.StrokeThickness = turtle.PenSize;
+                line.Stroke = _brushColor;
+
+                line.X1 = lineStartX;
+                line.Y1 = lineStartY;
+                line.X2 = lineStartX;
+                line.Y2 = lineStartY;
+
+
+                var sb = new Storyboard();
+                var animateX = new DoubleAnimation(lineStartX, trueLineEndX, new Duration(new TimeSpan(0, 0, 1)));
+                var animateY = new DoubleAnimation(lineStartY, trueLineEndY, new Duration(new TimeSpan(0, 0, 1)));
+
+                Storyboard.SetTarget(animateX, line);
+                Storyboard.SetTarget(animateY, line);
+                Storyboard.SetTargetProperty(animateX, new PropertyPath("(Line.X2)"));
+                Storyboard.SetTargetProperty(animateY, new PropertyPath("(Line.Y2)"));
+
+                sb.Children.Add(animateX);
+                sb.Children.Add(animateY);
+                //Set a new position for turtle
+                this.RelocateTurtle(turtle, trueLineEndX, trueLineEndY, sb);
+
+                //Show the line
+                this.Children.Add(line);
+
+                //AnimationQueue.Enqueue(sb, line);
+            }
+        }
+
+        public void TurtleReset(Turtle turtle)
+        {
+            //Save the current color and apply it after placing turtle againt
+            var color = _brushColor;
+
+            //Delete the turtle from Canvas and add a new one
+            this.RemoveTurtle(turtle);
+            this.PlaceTurtle(turtle);
+
+            _brushColor = color;
+        }
+
+        public void TurtleRotate(Turtle turtle, double degrees)
+        {
+            if (degrees == 0) return;
+            //Convert degrees to radiants
+            double angle = (Math.PI * -degrees) / 180.0;
+
+            _lineRotation += angle;
+
+            //Save the sin and cos values
+            //double sinVal = Math.Round(Math.Sin(_turtleRotation), 4);
+            //double cosVal = Math.Round(Math.Cos(_turtleRotation), 4);
+
+            //Get the tail coords of the turtle
+            //double xTail = _turtleRep.Points[0].X;
+            //double yTail = _turtleRep.Points[0].Y;
+
+
+            /*for (int i = 0; i < _turtleRep.Points.Count; i++)
+            {
+                //Create a new Point and insert it in the place of old one
+                Point point = _turtleRep.Points[i];
+
+                point.X = this.newPointX(_turtleRep.Points[i].X, xTail, _turtleRep.Points[i].Y, yTail, sinVal, cosVal);
+                point.Y = this.newPointY(_turtleRep.Points[i].X, xTail, _turtleRep.Points[i].Y, yTail, sinVal, cosVal);
+                _turtleRep.Points[i] = point;
+            }*/
+            var turtleTransform = _turtleRep.RenderTransform as RotateTransform;
+
+            var rotationAnimation = new DoubleAnimation(_turtleRotation, _turtleRotation - degrees, new Duration(new TimeSpan(0, 0, 1)));
+
+            AnimationQueue.Enqueue(rotationAnimation, turtleTransform, RotateTransform.AngleProperty);
+            _turtleRotation -= degrees;
+        }
+
+        public void TurtleChangeBrush(Turtle turtle, string color)
+        {
+            //TODO: Change ifs to enums or something
+            if (color == "Red")
+                _brushColor = Brushes.Red;
+            else if (color == "Green")
+                _brushColor = Brushes.Green;
+            else if (color == "Yellow")
+                _brushColor = Brushes.Yellow;
+            else if (color == "Blue")
+                _brushColor = Brushes.Blue;
+            else if (color == "Purple")
+                _brushColor = Brushes.Purple;
+            else if (color == "Black")
+                _brushColor = Brushes.Black;
+            else
+                return;
+        }
+
+        //Method calculating a new point X - helper method for Rotate and moving forward/backward
+        private double newPointX(double x, double xs, double y, double ys, double sin, double cos)
+        {
+            return ((x - xs) * cos) - ((y - ys) * sin) + xs;
+        }
+
+        //Method calculating a new point Y - helper method for Rotate and moving forward/backward
+        private double newPointY(double x, double xs, double y, double ys, double sin, double cos)
+        {
+            return ((x - xs) * sin) + ((y - ys) * cos) + ys;
+        }
+
+        //Method relocating the turtle with new tail's point
+        private void RelocateTurtle(Turtle turtle, double newCenterX, double newCenterY, Storyboard storyboard = null)
+        {
+            //Set the center point (The coords of the tail)
+            var xCenter = newCenterX;
+            var yCenter = newCenterY;
+
+            var sb = storyboard ?? new Storyboard();
+
+            var animationX = new DoubleAnimation(_turtleLeft, xCenter, new Duration(new TimeSpan(0, 0, 1)));
+            var animationY = new DoubleAnimation(_turtleTop, yCenter, new Duration(new TimeSpan(0, 0, 1)));
+
+            Storyboard.SetTarget(animationX, _turtleRep);
+            Storyboard.SetTarget(animationY, _turtleRep);
+            Storyboard.SetTargetProperty(animationX, new PropertyPath("(Canvas.Left)"));
+            Storyboard.SetTargetProperty(animationY, new PropertyPath("(Canvas.Top)"));
+
+            sb.Children.Add(animationX);
+            sb.Children.Add(animationY);
+
+            AnimationQueue.Enqueue(sb);
+
+            _turtleLeft = xCenter;
+            _turtleTop = yCenter;
+
 
             //Rotate the turtle
             this.TurtleRotate(turtle, 0);
