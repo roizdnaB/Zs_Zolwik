@@ -40,36 +40,33 @@
             CommandFileOk="{Binding SaveTextFromFile}"
             DefaultExtension="txt"
             FilterIndex="0" />
-        
+
         <db:SaveFileDialogBox
             x:Name="SaveImageJPG"
             Filter="JPEG Image (.jpeg)|*.jpeg"
             DefaultExtension="jpg"
             FilePath="image.jpg"
             FilterIndex="0"
-            CommandFileOk="{Binding SaveAsJPG}"
-            />
+            CommandFileOk="{Binding SaveAsJPG}" />
         <db:SaveFileDialogBox
             x:Name="SaveImagePNG"
             Filter="PNG Image (.png)|*.png"
             DefaultExtension="png"
             FilePath="image.png"
             FilterIndex="0"
-            CommandFileOk="{Binding SaveAsPNG}"
-            />
+            CommandFileOk="{Binding SaveAsPNG}" />
         <db:SaveFileDialogBox
             x:Name="SaveImageBTM"
             Filter="Bitmap Image (.bmp)|*.bmp"
             FilePath="image.bmp"
             FilterIndex="0"
-            CommandFileOk="{Binding SaveAsBTM}"
-            />
+            CommandFileOk="{Binding SaveAsBTM}" />
         <db:SaveFileDialogBox
             x:Name="SaveImageSVG"
             Filter="SVG Image (.svg)|*.svg"
             FilePath="image.svg"
             FilterIndex="0"
-            CommandFileOk="{Binding SaveAsSVG}"/>
+            CommandFileOk="{Binding SaveAsSVG}" />
 
         <DockPanel Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top" Background="LightGray" BorderThickness="1" BorderBrush="Black">

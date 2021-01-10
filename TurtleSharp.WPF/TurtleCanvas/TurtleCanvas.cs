@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -18,11 +16,13 @@ namespace TurtleSharp.WPF
         private double _lineRotation = 0;
         private Brush _brushColor = Brushes.Black;
         private double _brushSize = 1;
-
         private double _turtleLeft = 0;
         private double _turtleTop = 0;
 
         public AnimationQueue AnimationQueue = new AnimationQueue();
+
+        //The list required to save file as CVG
+        private List<Line> _lines;
 
         public void Clear()
         {
@@ -35,18 +35,20 @@ namespace TurtleSharp.WPF
             _turtleTop = 0;
             _turtleLeft = 0;
             _lineRotation = 0;
+            _lines = new List<Line>();
         }
 
         //Place the turtle on the screen
         public void PlaceTurtle(Turtle turtle)
         {
             _turtleRep = new Polygon();
+            _lines = new List<Line>();
             SetLeft(_turtleRep, 0);
             SetTop(_turtleRep, 0);
             _turtleRep.Fill = Brushes.Green;
             _turtleRep.Stroke = Brushes.Black;
             _turtleRep.StrokeThickness = 2;
-                
+
             //Make shell green
             _turtleRep.FillRule = FillRule.Nonzero;
 
@@ -58,7 +60,7 @@ namespace TurtleSharp.WPF
             _lineRotation = 0;
 
             this.InitializeTurtle(turtle);
-            
+
             //Set the shape of the turtle and place it in the middle of the canvas
             //this.RelocateTurtle(turtle, 0, 0);
 
@@ -72,8 +74,8 @@ namespace TurtleSharp.WPF
             Point PointB = new Point(4, -4);
             Point PointC = new Point(2, -10);
             Point PointD = new Point(8, -8);
-            Point PointE = new Point(12,-12);
-            Point PointF = new Point(15,-11);
+            Point PointE = new Point(12, -12);
+            Point PointF = new Point(15, -11);
             Point PointG = new Point(21, -14);
             Point PointH = new Point(21, -9);
             Point PointI = new Point(24, -8);
@@ -88,7 +90,7 @@ namespace TurtleSharp.WPF
             Point PointS = new Point(15, 11);
             Point PointT = new Point(12, 12);
             Point PointU = new Point(8, 8);
-            Point PointW = new Point(2,10);
+            Point PointW = new Point(2, 10);
             Point PointZ = new Point(4, 4);
 
             //Set the collection of points and add all points to the collection
@@ -184,7 +186,6 @@ namespace TurtleSharp.WPF
                 line.X2 = lineStartX;
                 line.Y2 = lineStartY;
 
-
                 var sb = new Storyboard();
                 var animateX = new DoubleAnimation(lineStartX, trueLineEndX, new Duration(new TimeSpan(0, 0, 1)));
                 var animateY = new DoubleAnimation(lineStartY, trueLineEndY, new Duration(new TimeSpan(0, 0, 1)));
@@ -201,6 +202,7 @@ namespace TurtleSharp.WPF
 
                 //Show the line
                 this.Children.Add(line);
+                _lines.Add(line);
 
                 //AnimationQueue.Enqueue(sb, line);
             }
@@ -211,6 +213,7 @@ namespace TurtleSharp.WPF
             //Save the current color and size, and apply it after placing turtle againt
             var color = _brushColor;
             var size = _brushSize;
+            var lines = _lines;
 
             //Delete the turtle from Canvas and add a new one
             this.RemoveTurtle(turtle);
@@ -218,6 +221,7 @@ namespace TurtleSharp.WPF
 
             _brushColor = color;
             _brushSize = size;
+            _lines = lines;
         }
 
         public void TurtleRotate(Turtle turtle, double degrees)
@@ -235,7 +239,6 @@ namespace TurtleSharp.WPF
             //Get the tail coords of the turtle
             //double xTail = _turtleRep.Points[0].X;
             //double yTail = _turtleRep.Points[0].Y;
-
 
             /*for (int i = 0; i < _turtleRep.Points.Count; i++)
             {
@@ -314,7 +317,6 @@ namespace TurtleSharp.WPF
 
             _turtleLeft = xCenter;
             _turtleTop = yCenter;
-
 
             //Rotate the turtle
             this.TurtleRotate(turtle, 0);

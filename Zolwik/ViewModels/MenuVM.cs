@@ -34,10 +34,19 @@ namespace Zolwik.ViewModels
         public RelayCommand SaveAsSVG { get; private set; }
         public RelayCommand SaveAsBTM { get; private set; }
 
+        //The 'wow' function
         private void _saveAsSVG(object path)
         {
             string FilePath = path as string;
-            //placeholder
+
+            //Get the code of the SVG file from the converter
+            //string code = SVGConverter.GetSVGCode();
+
+
+            //Save it as svg
+            //File.WriteAllText(FilePath, code);
+
+            Path = FilePath;
         }
 
         private CroppedBitmap bitmapHelper()
@@ -160,35 +169,32 @@ namespace Zolwik.ViewModels
             SaveAsPNG = new RelayCommand(arg => _saveAsPNG(arg));
             SaveAsSVG = new RelayCommand(arg => _saveAsSVG(arg));
             SaveAsBTM = new RelayCommand(arg => _saveAsBTM(arg));
-            
-                Run = new RelayCommand(
-                    arg =>
-                    {
-                        _canvas.Clear();
-                        try
-                        {
-                            CSharpScript.RunAsync(
-                                Text,
-                                globals: new TurtleCanvasPair { Turtle = Turtle, Canvas = TurtlePresentationHook },
-                                globalsType: typeof(TurtleCanvasPair),
-                                options: ScriptOptions.Default.WithEmitDebugInformation(true)
-                            );
-                        }
-                        catch (CompilationErrorException e)
-                        {
-                            var dialogBox = new MessageDialogBox()
-                            {
-                                Caption = "Blad",
-                                Icon = System.Windows.MessageBoxImage.Warning,
-                                Buttons = System.Windows.MessageBoxButton.OK
-                            };
-                            dialogBox.showMessageBox(e.Message);
 
-                        }
+            Run = new RelayCommand(
+                arg =>
+                {
+                    _canvas.Clear();
+                    try
+                    {
+                        CSharpScript.RunAsync(
+                            Text,
+                            globals: new TurtleCanvasPair { Turtle = Turtle, Canvas = TurtlePresentationHook },
+                            globalsType: typeof(TurtleCanvasPair),
+                            options: ScriptOptions.Default.WithEmitDebugInformation(true)
+                        );
                     }
-                );
-            
-            
+                    catch (CompilationErrorException e)
+                    {
+                        var dialogBox = new MessageDialogBox()
+                        {
+                            Caption = "Blad",
+                            Icon = System.Windows.MessageBoxImage.Warning,
+                            Buttons = System.Windows.MessageBoxButton.OK
+                        };
+                        dialogBox.showMessageBox(e.Message);
+                    }
+                }
+            );
         }
     }
 

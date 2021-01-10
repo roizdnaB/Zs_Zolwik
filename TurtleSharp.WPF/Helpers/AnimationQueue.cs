@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 
 namespace TurtleSharp.WPF.Helpers
 {
@@ -12,13 +9,17 @@ namespace TurtleSharp.WPF.Helpers
         private Action start;
         private object last;
 
-        private object getLast() { return last; }
+        private object getLast()
+        {
+            return last;
+        }
 
         private bool running = false;
 
         public void Start()
         {
-            if (!running) {
+            if (!running)
+            {
                 running = true;
                 start.Invoke();
             }
@@ -26,7 +27,8 @@ namespace TurtleSharp.WPF.Helpers
 
         public void Enqueue(Storyboard animation, FrameworkElement reciever)
         {
-            Action begin = () => {
+            Action begin = () =>
+            {
                 animation.Begin(reciever);
             };
 
@@ -54,7 +56,8 @@ namespace TurtleSharp.WPF.Helpers
 
         internal void Enqueue(Storyboard animation)
         {
-            Action begin = () => {
+            Action begin = () =>
+            {
                 animation.Begin();
             };
 
@@ -82,8 +85,8 @@ namespace TurtleSharp.WPF.Helpers
 
         public void Enqueue(AnimationTimeline animation, UIElement reciever, DependencyProperty dp)
         {
-
-            Action begin = () => {
+            Action begin = () =>
+            {
                 reciever.BeginAnimation(dp, animation);
             };
 
@@ -111,8 +114,8 @@ namespace TurtleSharp.WPF.Helpers
 
         public void Enqueue(AnimationTimeline animation, Animatable reciever, DependencyProperty dp)
         {
-
-            Action begin = () => {
+            Action begin = () =>
+            {
                 reciever.BeginAnimation(dp, animation);
             };
 
@@ -150,7 +153,6 @@ namespace TurtleSharp.WPF.Helpers
                 at.Completed += delegate { action.Invoke(); };
             }
         }
-
 
         /*internal void EnqueueAnimationStop(DependencyProperty property, UIElement reciever)
         {
