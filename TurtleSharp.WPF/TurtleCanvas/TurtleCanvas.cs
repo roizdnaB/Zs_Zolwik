@@ -18,6 +18,7 @@ namespace TurtleSharp.WPF
         private double _brushSize = 1;
         private double _turtleLeft = 0;
         private double _turtleTop = 0;
+        private bool _turtlePen = true;
 
         public AnimationQueue AnimationQueue = new AnimationQueue();
 
@@ -35,6 +36,7 @@ namespace TurtleSharp.WPF
             _turtleTop = 0;
             _turtleLeft = 0;
             _lineRotation = 0;
+            _turtlePen = true;
             _lines = new List<Line>();
         }
 
@@ -43,6 +45,7 @@ namespace TurtleSharp.WPF
         {
             _turtleRep = new Polygon();
             _lines = new List<Line>();
+            _turtlePen = true;
             SetLeft(_turtleRep, 0);
             SetTop(_turtleRep, 0);
             _turtleRep.Fill = Brushes.Green;
@@ -148,6 +151,11 @@ namespace TurtleSharp.WPF
                 this.Children.Add(_turtleRep);
         }
 
+        public void ToggleTurtlePen(Turtle turtle)
+        {
+            _turtlePen = turtle.PenActive;
+        }
+
         public void TurtleBackward(Turtle turtle, double distance)
         {
             //Just reverse the distance value and call the forward method (smart!!!)
@@ -203,9 +211,11 @@ namespace TurtleSharp.WPF
                 this.RelocateTurtle(turtle, trueLineEndX, trueLineEndY, sb);
 
                 //Show the line
-                this.Children.Add(line);
-                _lines.Add(line);
-
+                if (_turtlePen)
+                {
+                    this.Children.Add(line);
+                    _lines.Add(line);
+                }
                 //AnimationQueue.Enqueue(sb, line);
             }
         }
@@ -216,6 +226,7 @@ namespace TurtleSharp.WPF
             var color = _brushColor;
             var size = _brushSize;
             var lines = _lines;
+            var turtlePen = _turtlePen;
 
             //Delete the turtle from Canvas and add a new one
             this.RemoveTurtle(turtle);
@@ -224,6 +235,7 @@ namespace TurtleSharp.WPF
             _brushColor = color;
             _brushSize = size;
             _lines = lines;
+            _turtlePen = turtlePen;
         }
 
         public void TurtleRotate(Turtle turtle, double degrees)

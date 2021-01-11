@@ -7,6 +7,7 @@ namespace TurtleSharp
     {
         private ITurtlePresentation Presentation;
         private bool _isVisible = true;
+        private bool _penActive = true;
         public bool IsPlacedOnSomething => Presentation != null;
 
         public bool IsVisible
@@ -22,10 +23,23 @@ namespace TurtleSharp
                 }
             }
         }
+        public bool PenActive
+        {
+            get => _penActive;
+            set
+            {
+                if (value == _penActive) return;
+                else
+                {
+                    _penActive = value;
+                    Presentation?.ToggleTurtlePen(this);
+                }
+            }
+        }
+
 
         public Color PenColor = Color.Black; //Brush?
         public double PenSize = 1;
-        public bool PenActive = true;
 
         public void Place(ITurtlePresentation presentation)
         {
@@ -60,6 +74,9 @@ namespace TurtleSharp
 
         public void Show() => IsVisible = true;
         public void Hide() => IsVisible = false;
+
+        public void PenUp() => PenActive = false;
+        public void PenDown() => PenActive = true;
 
         public void Square(double sideLength)
         {
