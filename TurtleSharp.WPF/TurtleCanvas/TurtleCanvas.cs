@@ -142,8 +142,10 @@ namespace TurtleSharp.WPF
 
         public void ToggleTurtleVisibility(Turtle turtle)
         {
-            //Just reverse the bool
-            turtle.IsVisible = turtle.IsVisible;
+            if (!turtle.IsVisible)
+                this.Children.Remove(_turtleRep);
+            else
+                this.Children.Add(_turtleRep);
         }
 
         public void TurtleBackward(Turtle turtle, double distance)

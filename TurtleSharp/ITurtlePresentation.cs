@@ -22,6 +22,8 @@
 
         void TurtleChangeBrushSize(Turtle turtle, double size);
 
+
+
         void Clear();
     }
 }
