@@ -12,6 +12,7 @@ using System.Linq;
 using Zolwik.DialogBoxes;
 using System.Windows.Shapes;
 using Zolwik.Helpers;
+using System.Threading.Tasks;
 
 namespace Zolwik.ViewModels
 {
@@ -185,12 +186,15 @@ namespace Zolwik.ViewModels
                     _canvas.Clear();
                     try
                     {
-                        CSharpScript.RunAsync(
-                            Text,
-                            globals: new TurtleCanvasPair { Turtle = _turtle, Canvas = TurtlePresentationHook },
-                            globalsType: typeof(TurtleCanvasPair),
-                            options: ScriptOptions.Default.WithEmitDebugInformation(true)
-                        );
+                        Task.Run(() =>
+                        {
+                            CSharpScript.RunAsync(
+                                Text,
+                                globals: new TurtleCanvasPair { Turtle = _turtle, Canvas = TurtlePresentationHook },
+                                globalsType: typeof(TurtleCanvasPair),
+                                options: ScriptOptions.Default.WithEmitDebugInformation(true)
+                            );
+                        });
                     }
                     catch (CompilationErrorException e)
                     {

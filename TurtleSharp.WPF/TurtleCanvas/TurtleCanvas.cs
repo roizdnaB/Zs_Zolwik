@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,12 +21,12 @@ namespace TurtleSharp.WPF
         private double _turtleTop = 0;
         private bool _turtlePen = true;
 
-        public AnimationQueue AnimationQueue = new AnimationQueue();
+        private AnimationQueue AnimationQueue = new AnimationQueue();
 
         //The list required to save file as CVG
         private List<Line> _lines;
 
-        public void Clear()
+        public void Clear() => Dispatcher.Invoke(() =>
         {
             //Clear the Canvas
             this.Children.Clear();
@@ -38,16 +39,17 @@ namespace TurtleSharp.WPF
             _lineRotation = 0;
             _turtlePen = true;
             _lines = new List<Line>();
-        }
+        });
 
         //Place the turtle on the screen
-        public void PlaceTurtle(Turtle turtle)
+        public void PlaceTurtle(Turtle turtle) => Dispatcher.Invoke(() =>
         {
             _turtleRep = new Polygon();
             _lines = new List<Line>();
             _turtlePen = true;
             SetLeft(_turtleRep, 0);
             SetTop(_turtleRep, 0);
+
             _turtleRep.Fill = Brushes.Green;
             _turtleRep.Stroke = Brushes.Black;
             _turtleRep.StrokeThickness = 2;
@@ -69,9 +71,9 @@ namespace TurtleSharp.WPF
 
             //Add to the Canvas
             this.Children.Add(_turtleRep);
-        }
+        });
 
-        private void InitializeTurtle(Turtle turtle)
+        private void InitializeTurtle(Turtle turtle) => Dispatcher.Invoke(() =>
         {
             Point PointA = new Point(0, 0);
             Point PointB = new Point(4, -4);
@@ -134,14 +136,14 @@ namespace TurtleSharp.WPF
             _turtleRep.Points = myPointCollection;
 
             _turtleRep.RenderTransform = new RotateTransform() { CenterX = PointA.X, CenterY = PointA.Y };
-        }
+        });
 
-        public void RemoveTurtle(Turtle turtle)
+        public void RemoveTurtle(Turtle turtle) => Dispatcher.Invoke(() =>
         {
             //Remove the turtle from the Canvas and set it to null
             this.Children.Remove(_turtleRep);
             _turtleRep = null;
-        }
+        });
 
         public void ToggleTurtleVisibility(Turtle turtle)
         {
@@ -159,8 +161,8 @@ namespace TurtleSharp.WPF
         public void TurtleBackward(Turtle turtle, double distance)
         {
             //Just reverse the distance value and call the forward method (smart!!!)
-            this.TurtleForward(turtle, -distance);
-            this.TurtleRotate(turtle, _turtleRotation - 180);
+            TurtleForward(turtle, -distance);
+            TurtleRotate(turtle, _turtleRotation - 180);
         }
 
         public void TurtleCurve(Turtle turtle, double radius, double length)
@@ -238,7 +240,8 @@ namespace TurtleSharp.WPF
             _turtlePen = turtlePen;
         }
 
-        public void TurtleRotate(Turtle turtle, double degrees)
+        
+        public void TurtleRotate(Turtle turtle, double degrees) => Dispatcher.Invoke(() =>
         {
             if (degrees == 0) return;
             //Convert degrees to radiants
@@ -269,7 +272,7 @@ namespace TurtleSharp.WPF
 
             AnimationQueue.Enqueue(rotationAnimation, turtleTransform, RotateTransform.AngleProperty);
             _turtleRotation -= degrees;
-        }
+        });
 
         public void TurtleChangeBrush(Turtle turtle, string color)
         {
@@ -308,7 +311,7 @@ namespace TurtleSharp.WPF
         }
 
         //Method relocating the turtle with new tail's point
-        private void RelocateTurtle(Turtle turtle, double newCenterX, double newCenterY, Storyboard storyboard = null)
+        private void RelocateTurtle(Turtle turtle, double newCenterX, double newCenterY, Storyboard storyboard = null) => Dispatcher.Invoke(() =>
         {
             //Set the center point (The coords of the tail)
             var xCenter = newCenterX;
@@ -334,6 +337,6 @@ namespace TurtleSharp.WPF
 
             //Rotate the turtle
             this.TurtleRotate(turtle, 0);
-        }
+        });
     }
 }
