@@ -58,6 +58,9 @@ namespace TurtleSharp
 
         public void Circle(double radius) => Presentation?.TurtleCurve(this, radius, 2 * Math.PI * radius);
 
+        public void Show() => IsVisible = true;
+        public void Hide() => IsVisible = false;
+
         public void Square(double sideLength)
         {
             if (IsPlacedOnSomething)

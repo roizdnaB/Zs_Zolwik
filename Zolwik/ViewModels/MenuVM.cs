@@ -4,17 +4,20 @@ using MVVM.ViewModel;
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using TurtleSharp;
 using Zolwik.Compiler;
+using System.Linq;
 using Zolwik.DialogBoxes;
+using System.Windows.Shapes;
+using Zolwik.Helpers;
 
 namespace Zolwik.ViewModels
 {
     internal class MenuVM : ViewModelBase
     {
-        private ITurtleCommandsCompiler _compiler = new RoslynTurtleCommandsCompiler();
-        private Turtle Turtle = new Turtle();
+        private Turtle _turtle = new Turtle();
 
         private string _text = string.Empty;
         private string _path = null;
@@ -40,11 +43,10 @@ namespace Zolwik.ViewModels
             string FilePath = path as string;
 
             //Get the code of the SVG file from the converter
-            //string code = SVGConverter.GetSVGCode();
-
+            string code = SVGConverter.GetSVGCode((_canvas as Canvas).Children.OfType<Line>().ToList());
 
             //Save it as svg
-            //File.WriteAllText(FilePath, code);
+            File.WriteAllText(FilePath, code);
 
             Path = FilePath;
         }
@@ -61,6 +63,7 @@ namespace Zolwik.ViewModels
 
         private void _saveAsBTM(object path)
         {
+            _turtle.IsVisible = false;
             string FilePath = path as string;
 
             var crop = bitmapHelper();
@@ -72,10 +75,12 @@ namespace Zolwik.ViewModels
             {
                 btmEncoder.Save(fs);
             }
+            _turtle.IsVisible = true;
         }
 
         private void _saveAsJPG(object path)
         {
+            _turtle.IsVisible = false;
             string FilePath = path as string;
             //Nie działa dobrze
             var crop = bitmapHelper();
@@ -87,10 +92,13 @@ namespace Zolwik.ViewModels
             {
                 jpgEncoder.Save(fs);
             }
+
+            _turtle.IsVisible = true;
         }
 
         private void _saveAsPNG(object path)
         {
+            _turtle.IsVisible = false;
             string FilePath = path as string;
 
             var crop = bitmapHelper();
@@ -102,6 +110,7 @@ namespace Zolwik.ViewModels
             {
                 pngEncoder.Save(fs);
             }
+            _turtle.IsVisible = true;
         }
 
         private void _loadTextFromFileCommand(object path)
@@ -178,7 +187,7 @@ namespace Zolwik.ViewModels
                     {
                         CSharpScript.RunAsync(
                             Text,
-                            globals: new TurtleCanvasPair { Turtle = Turtle, Canvas = TurtlePresentationHook },
+                            globals: new TurtleCanvasPair { Turtle = _turtle, Canvas = TurtlePresentationHook },
                             globalsType: typeof(TurtleCanvasPair),
                             options: ScriptOptions.Default.WithEmitDebugInformation(true)
                         );
