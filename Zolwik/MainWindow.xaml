@@ -11,12 +11,14 @@
         xmlns:db="clr-namespace:Zolwik.DialogBoxes"
         xmlns:resx="clr-namespace:Zolwik.Zasoby"
         mc:Ignorable="d"
-        Title="{x:Static resx:Resource.title}" Height="450" Width="800">
+        Title="{x:Static resx:Resource.title}"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:MenuVM />
     </Window.DataContext>
 
-    <Grid Background="WhiteSmoke">
+    <Grid Background="#FFE1F3CC">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -69,45 +71,45 @@
             CommandFileOk="{Binding SaveAsSVG}" />
 
         <DockPanel Grid.ColumnSpan="2">
-            <Menu DockPanel.Dock="Top" Background="LightGray" BorderThickness="1" BorderBrush="Black">
-                <MenuItem Header="{x:Static resx:Resource.script}">
-                    <MenuItem Header="{x:Static resx:Resource._new}" />
-                    <MenuItem Header="{x:Static resx:Resource.open}" Command ="{Binding ElementName=LoadFile, Path=Show}" />
-                    <MenuItem Header="{x:Static resx:Resource.save}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
-                    <MenuItem Header="{x:Static resx:Resource.saveAs}" Command ="{Binding ElementName=SaveFile, Path=Show}" />
-                    <MenuItem Header="{x:Static resx:Resource.export}">
-                        <MenuItem Header="{x:Static resx:Resource.to_jpg}" Command="{Binding ElementName=SaveImageJPG, Path=Show}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.to_png}" Command="{Binding ElementName=SaveImagePNG, Path=Show}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.to_btm}" Command="{Binding ElementName=SaveImageBTM, Path=Show}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.to_svg}" Command="{Binding ElementName=SaveImageSVG, Path=Show}"></MenuItem>
+            <Menu DockPanel.Dock="Top" Background="#FF4A7C59" BorderThickness="1" BorderBrush="Black" Height="30" VerticalAlignment="Top" Foreground="White" FontStretch="ExtraExpanded" FontWeight="Bold" FontFamily="Verdana">
+                <MenuItem Header="{x:Static resx:Resource.script}" Height="30" FontSize="12">
+                    <MenuItem Header="{x:Static resx:Resource._new}" Background="#FF4A7C59" />
+                    <MenuItem Header="{x:Static resx:Resource.open}" Command ="{Binding ElementName=LoadFile, Path=Show}" Background="#FF4A7C59" />
+                    <MenuItem Header="{x:Static resx:Resource.save}" Command ="{Binding ElementName=SaveFile, Path=Show}" Background="#FF4A7C59" />
+                    <MenuItem Header="{x:Static resx:Resource.saveAs}" Command ="{Binding ElementName=SaveFile, Path=Show}" Background="#FF4A7C59" />
+                    <MenuItem Header="{x:Static resx:Resource.export}" Background="#FF4A7C59">
+                        <MenuItem Header="{x:Static resx:Resource.to_jpg}" Command="{Binding ElementName=SaveImageJPG, Path=Show}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_png}" Command="{Binding ElementName=SaveImagePNG, Path=Show}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_btm}" Command="{Binding ElementName=SaveImageBTM, Path=Show}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.to_svg}" Command="{Binding ElementName=SaveImageSVG, Path=Show}" Background="#FF4A7C59"></MenuItem>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="{x:Static resx:Resource.settings}">
-                    <MenuItem Header="{x:Static resx:Resource.background}">
-                        <MenuItem Header="{x:Static resx:Resource._default}" IsCheckable="True" IsChecked="True" x:Name="MenuItem_Default" vm:MenuItemExtensions.GroupName="someGroup" />
-                        <MenuItem Header="{x:Static resx:Resource.dark}" IsCheckable="True" IsChecked="False" x:Name="MenuItem_Dark" vm:MenuItemExtensions.GroupName="someGroup" />
+                    <MenuItem Header="{x:Static resx:Resource.background}" Background="#FF4A7C59">
+                        <MenuItem Header="{x:Static resx:Resource._default}" IsCheckable="True" IsChecked="True" x:Name="MenuItem_Default" vm:MenuItemExtensions.GroupName="someGroup" Background="#FF4A7C59"/>
+                        <MenuItem Header="{x:Static resx:Resource.dark}" IsCheckable="True" IsChecked="False" x:Name="MenuItem_Dark" vm:MenuItemExtensions.GroupName="someGroup" Background="#FF4A7C59"/>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="{x:Static resx:Resource.about}" Command="{Binding About}">
                 </MenuItem>
                 <MenuItem Header="{x:Static resx:Resource.examples}">
-                    <MenuItem Header="{x:Static resx:Resource.basic_functions}">
-                        <MenuItem Header="{x:Static resx:Resource.forward}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.forward}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.backward}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.backward}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.for_plus_rot}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.for_plus_rot}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.curve}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.curve}"></MenuItem>
+                    <MenuItem Header="{x:Static resx:Resource.basic_functions}" Background="#FF4A7C59">
+                        <MenuItem Header="{x:Static resx:Resource.forward}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.forward}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.backward}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.backward}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.for_plus_rot}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.for_plus_rot}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.curve}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.curve}" Background="#FF4A7C59"></MenuItem>
                     </MenuItem>
-                    <MenuItem Header="{x:Static resx:Resource.shapes}">
-                        <MenuItem Header="{x:Static resx:Resource.circle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.circle}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.square}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.square}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.triangle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangle}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.rectangle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.rectangle}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.rhomboid}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.rhomboid}"></MenuItem>
+                    <MenuItem Header="{x:Static resx:Resource.shapes}" Background="#FF4A7C59">
+                        <MenuItem Header="{x:Static resx:Resource.circle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.circle}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.square}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.square}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.triangle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangle}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.rectangle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.rectangle}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.rhomboid}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.rhomboid}" Background="#FF4A7C59"></MenuItem>
                     </MenuItem>
-                    <MenuItem Header="{x:Static resx:Resource.other}">
-                        <MenuItem Header="{x:Static resx:Resource.triangles}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangles}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.triangles_color}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangles_color}"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.triangles_loop}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangles_loop}"></MenuItem>
+                    <MenuItem Header="{x:Static resx:Resource.other}" Background="#FF4A7C59">
+                        <MenuItem Header="{x:Static resx:Resource.triangles}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangles}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.triangles_color}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangles_color}" Background="#FF4A7C59"></MenuItem>
+                        <MenuItem Header="{x:Static resx:Resource.triangles_loop}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangles_loop}" Background="#FF4A7C59"></MenuItem>
                     </MenuItem>
                 </MenuItem>
             </Menu>
@@ -118,9 +120,9 @@
         <TextBox Grid.Column="1" Margin="10" Grid.Row="1" Text="{Binding Text}"
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                     TextWrapping="Wrap"
-                    AcceptsReturn="True" />
+                    AcceptsReturn="True" FontFamily="Corbel"  FontSize="18" Padding="5"/>
         <StackPanel Grid.Column="1" Grid.Row="2" Margin="10,5" HorizontalAlignment="Center">
-            <Button Width="100" Height="20" Content="{x:Static resx:Resource.run}" Command="{Binding Run}" Background="LightGray" />
+            <Button Width="200" Height="50" Content="{x:Static resx:Resource.run}" FontSize="14" Command="{Binding Run}" Background="#FF046531" Foreground="White" BorderBrush="#FF2C6E49" FontWeight="Bold" FontFamily="Verdana"  />
         </StackPanel>
     </Grid>
-</Window>
+</Window >
