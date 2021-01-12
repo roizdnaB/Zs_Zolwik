@@ -232,7 +232,7 @@ namespace Zolwik.ViewModels
                             {
                                 var dialogBox = new MessageDialogBox()
                                 {
-                                    Caption = "Blad",
+                                    Caption = "Błąd kompilacji",
                                     Icon = System.Windows.MessageBoxImage.Warning,
                                     Buttons = System.Windows.MessageBoxButton.OK
                                 };
@@ -245,6 +245,18 @@ namespace Zolwik.ViewModels
                                 var dialogBox = new MessageDialogBox()
                                 {
                                     Caption = "Anulowano",
+                                    Icon = System.Windows.MessageBoxImage.Information,
+                                    Buttons = System.Windows.MessageBoxButton.OK
+                                };
+                                dialogBox.showMessageBox(e.Message);
+                            });
+                        }
+                        else
+                        {
+                            Dispatcher.Invoke(() => {
+                                var dialogBox = new MessageDialogBox()
+                                {
+                                    Caption = "Błąd programu",
                                     Icon = System.Windows.MessageBoxImage.Information,
                                     Buttons = System.Windows.MessageBoxButton.OK
                                 };
