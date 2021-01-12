@@ -119,8 +119,14 @@
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                     TextWrapping="Wrap"
                     AcceptsReturn="True" />
-        <StackPanel Grid.Column="1" Grid.Row="2" Margin="10,5" HorizontalAlignment="Center">
+        <StackPanel Grid.Column="1" Grid.Row="2" Margin="10,5" HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="5,0,5,0"/>
+                </Style>
+            </StackPanel.Resources>
             <Button Width="100" Height="20" Content="{x:Static resx:Resource.run}" Command="{Binding Run}" Background="LightGray" />
+            <Button Width="100" Height="20" Content="{x:Static resx:Resource.abort}" Command="{Binding Abort}" Background="LightGray" />
         </StackPanel>
     </Grid>
 </Window>

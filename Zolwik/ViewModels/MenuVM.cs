@@ -13,6 +13,8 @@ using Zolwik.DialogBoxes;
 using System.Windows.Shapes;
 using Zolwik.Helpers;
 using System.Threading.Tasks;
+using System.Threading;
+using TurtleSharp.WPF;
 
 namespace Zolwik.ViewModels
 {
@@ -24,6 +26,8 @@ namespace Zolwik.ViewModels
         private string _path = null;
         public string Path { get => _path; set => _path = value; }
         private ITurtlePresentation _canvas;
+        private CancellationTokenSource _cts;
+        private CancellationToken? _currentCancellationToken;
         public string Text { get => _text; set { _text = value; OnPropertyChanged(nameof(Text)); } }
         public ITurtlePresentation TurtlePresentationHook { get => _canvas; set { _canvas = value; OnPropertyChanged(nameof(TurtlePresentationHook)); } }
         public RelayCommand LoadTextFromFile { get; private set; }
@@ -31,6 +35,7 @@ namespace Zolwik.ViewModels
         public RelayCommand SaveAsTextFromFile { get; private set; }
         public RelayCommand CopyText { get; private set; }
         public RelayCommand Run { get; private set; }
+        public RelayCommand Abort { get; private set; }
         public RelayCommand About { get; private set; }
         public RelayCommand ShowExampleCode { get; private set; }
         public RelayCommand SaveAsJPG { get; private set; }
@@ -167,6 +172,17 @@ namespace Zolwik.ViewModels
             dialogBox.showMessageBox("Projekt zaliczeniowy z przedmiotu Inżynieria Oprogramowania. \n\n Natalia Szarek, Krzysztof Kłak, Daniel Jambor");
         }
 
+        private void _abortCommand()
+        {
+            if (_cts != null && _currentCancellationToken != null)
+            {
+                _cts.Cancel();
+                _cts.Dispose();
+                _cts = null;
+                _currentCancellationToken = null;
+            }
+        }
+
         public MenuVM()
         {
             LoadTextFromFile = new RelayCommand(arg => _loadTextFromFileCommand(arg));
@@ -179,20 +195,28 @@ namespace Zolwik.ViewModels
             SaveAsPNG = new RelayCommand(arg => _saveAsPNG(arg));
             SaveAsSVG = new RelayCommand(arg => _saveAsSVG(arg));
             SaveAsBTM = new RelayCommand(arg => _saveAsBTM(arg));
+            Abort = new RelayCommand(arg => _abortCommand());
 
             Run = new RelayCommand(
                 arg =>
                 {
+
                     _canvas.Clear();
                     try
                     {
+                        _cts = new CancellationTokenSource();
+                        _currentCancellationToken = _cts.Token;
+
+                        (_canvas as TurtleCanvas).CancellationToken = _currentCancellationToken;
+
                         Task.Run(() =>
                         {
-                            CSharpScript.RunAsync(
+                            return CSharpScript.RunAsync(
                                 Text,
                                 globals: new TurtleCanvasPair { Turtle = _turtle, Canvas = TurtlePresentationHook },
                                 globalsType: typeof(TurtleCanvasPair),
                                 options: ScriptOptions.Default.WithEmitDebugInformation(true)
+                                
                             );
                         });
                     }
@@ -202,6 +226,16 @@ namespace Zolwik.ViewModels
                         {
                             Caption = "Blad",
                             Icon = System.Windows.MessageBoxImage.Warning,
+                            Buttons = System.Windows.MessageBoxButton.OK
+                        };
+                        dialogBox.showMessageBox(e.Message);
+                    }
+                    catch (OperationCanceledException e)
+                    {
+                        var dialogBox = new MessageDialogBox()
+                        {
+                            Caption = "Anulowano",
+                            Icon = System.Windows.MessageBoxImage.Information,
                             Buttons = System.Windows.MessageBoxButton.OK
                         };
                         dialogBox.showMessageBox(e.Message);

@@ -79,6 +79,15 @@ namespace Zolwik.Zasoby {
         }
         
         /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Stop.
+        /// </summary>
+        public static string abort {
+            get {
+                return ResourceManager.GetString("abort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu _About.
         /// </summary>
         public static string about {
