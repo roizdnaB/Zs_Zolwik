@@ -15,6 +15,8 @@ using Zolwik.Helpers;
 using System.Threading.Tasks;
 using System.Threading;
 using TurtleSharp.WPF;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Zolwik.ViewModels
 {
@@ -34,7 +36,7 @@ namespace Zolwik.ViewModels
         public RelayCommand SaveTextFromFile { get; private set; }
         public RelayCommand SaveAsTextFromFile { get; private set; }
         public RelayCommand CopyText { get; private set; }
-        public RelayCommand Run { get; private set; }
+        public ICommand Run { get; private set; }
         public RelayCommand Abort { get; private set; }
         public RelayCommand About { get; private set; }
         public RelayCommand ShowExampleCode { get; private set; }
@@ -42,6 +44,8 @@ namespace Zolwik.ViewModels
         public RelayCommand SaveAsPNG { get; private set; }
         public RelayCommand SaveAsSVG { get; private set; }
         public RelayCommand SaveAsBTM { get; private set; }
+
+        private Dispatcher Dispatcher = Application.Current.Dispatcher;
 
         //The 'wow' function
         private void _saveAsSVG(object path)
@@ -202,46 +206,54 @@ namespace Zolwik.ViewModels
                 {
 
                     _canvas.Clear();
-                    try
-                    {
-                        _cts = new CancellationTokenSource();
-                        _currentCancellationToken = _cts.Token;
+                    _cts = new CancellationTokenSource();
+                    _currentCancellationToken = _cts.Token;
 
-                        (_canvas as TurtleCanvas).CancellationToken = _currentCancellationToken;
+                    (_canvas as TurtleCanvas).CancellationToken = _currentCancellationToken;
 
-                        Task.Run(() =>
-                        {
-                            return CSharpScript.RunAsync(
-                                Text,
-                                globals: new TurtleCanvasPair { Turtle = _turtle, Canvas = TurtlePresentationHook },
-                                globalsType: typeof(TurtleCanvasPair),
-                                options: ScriptOptions.Default.WithEmitDebugInformation(true)
-                                
-                            );
-                        });
-                    }
-                    catch (CompilationErrorException e)
+                    var task = Task.Run(() =>
                     {
-                        var dialogBox = new MessageDialogBox()
-                        {
-                            Caption = "Blad",
-                            Icon = System.Windows.MessageBoxImage.Warning,
-                            Buttons = System.Windows.MessageBoxButton.OK
-                        };
-                        dialogBox.showMessageBox(e.Message);
-                    }
-                    catch (OperationCanceledException e)
+                        CSharpScript.RunAsync(
+                            Text,
+                            globals: new TurtleCanvasPair { Turtle = _turtle, Canvas = TurtlePresentationHook },
+                            globalsType: typeof(TurtleCanvasPair),
+                            options: ScriptOptions.Default.WithEmitDebugInformation(true));
+                    });
+
+                    task.ContinueWith(prev =>
                     {
-                        var dialogBox = new MessageDialogBox()
+                    if (prev.IsFaulted)
+                    {
+                        var e = prev.Exception.InnerException;
+
+                        if (e is CompilationErrorException)
                         {
-                            Caption = "Anulowano",
-                            Icon = System.Windows.MessageBoxImage.Information,
-                            Buttons = System.Windows.MessageBoxButton.OK
-                        };
-                        dialogBox.showMessageBox(e.Message);
+                            Dispatcher.Invoke(() =>
+                            {
+                                var dialogBox = new MessageDialogBox()
+                                {
+                                    Caption = "Blad",
+                                    Icon = System.Windows.MessageBoxImage.Warning,
+                                    Buttons = System.Windows.MessageBoxButton.OK
+                                };
+                                dialogBox.showMessageBox(e.Message);
+                            });
+                        }
+                        else if (e is OperationCanceledException)
+                        {
+                            Dispatcher.Invoke(() => {
+                                var dialogBox = new MessageDialogBox()
+                                {
+                                    Caption = "Anulowano",
+                                    Icon = System.Windows.MessageBoxImage.Information,
+                                    Buttons = System.Windows.MessageBoxButton.OK
+                                };
+                                dialogBox.showMessageBox(e.Message);
+                            });
+                        }
                     }
-                }
-            );
+                });
+            });
         }
     }
 
