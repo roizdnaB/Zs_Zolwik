@@ -121,8 +121,25 @@
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                     TextWrapping="Wrap"
                     AcceptsReturn="True" FontFamily="Corbel"  FontSize="18" Padding="5"/>
-        <StackPanel Grid.Column="1" Grid.Row="2" Margin="10,5" HorizontalAlignment="Center">
-            <Button Width="200" Height="50" Content="{x:Static resx:Resource.run}" FontSize="14" Command="{Binding Run}" Background="#FF046531" Foreground="White" BorderBrush="#FF2C6E49" FontWeight="Bold" FontFamily="Verdana"  />
+        <StackPanel Grid.Column="1" Grid.Row="2" Margin="10,5" HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Style.Setters>
+                        <Setter Property="Width" Value="200"></Setter>
+                        <Setter Property="Height" Value="50"></Setter>
+                        <Setter Property="Width" Value="200"></Setter>
+                        <Setter Property="FontSize" Value="14"></Setter>
+                        <Setter Property="Background" Value="#FF046531"></Setter>
+                        <Setter Property="BorderBrush" Value="#FF2C6E49"></Setter>
+                        <Setter Property="Foreground" Value="White"></Setter>
+                        <Setter Property="FontWeight" Value="Bold"></Setter>
+                        <Setter Property="FontFamily" Value="Verdana"></Setter>
+                        <Setter Property="Margin" Value="5,0,5,0"></Setter>
+                    </Style.Setters>
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="{x:Static resx:Resource.run}" Command="{Binding Run}"/>
+            <Button Content="{x:Static resx:Resource.abort}" Command="{Binding Abort}"/>
         </StackPanel>
     </Grid>
 </Window >
