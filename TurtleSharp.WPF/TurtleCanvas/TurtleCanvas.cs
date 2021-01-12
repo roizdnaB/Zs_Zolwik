@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using TurtleSharp.WPF.Helpers;
+using static TurtleSharp.WPF.Helpers.SynchronizedDispatcher;
 
 namespace TurtleSharp.WPF
 {
@@ -20,13 +23,22 @@ namespace TurtleSharp.WPF
         private double _turtleLeft = 0;
         private double _turtleTop = 0;
         private bool _turtlePen = true;
+        private CancellationToken? _cancellationToken;
+        private SynchronizedDispatcher _queueDispatcher;
 
-        private AnimationQueue AnimationQueue = new AnimationQueue();
+        public CancellationToken? CancellationToken {
+            get => _cancellationToken;
+            set
+            {
+                _cancellationToken = value;
+                if (_queueDispatcher != null) _queueDispatcher.CancellationToken = value;
+            }
+        }
 
         //The list required to save file as CVG
         private List<Line> _lines;
 
-        public void Clear() => Dispatcher.Invoke(() =>
+        public void Clear() => RunOnUISynchronized(() =>
         {
             //Clear the Canvas
             this.Children.Clear();
@@ -42,7 +54,7 @@ namespace TurtleSharp.WPF
         });
 
         //Place the turtle on the screen
-        public void PlaceTurtle(Turtle turtle) => Dispatcher.Invoke(() =>
+        public void PlaceTurtle(Turtle turtle) => RunOnUISynchronized(() =>
         {
             _turtleRep = new Polygon();
             _lines = new List<Line>();
@@ -73,7 +85,7 @@ namespace TurtleSharp.WPF
             this.Children.Add(_turtleRep);
         });
 
-        private void InitializeTurtle(Turtle turtle) => Dispatcher.Invoke(() =>
+        private void InitializeTurtle(Turtle turtle)
         {
             Point PointA = new Point(0, 0);
             Point PointB = new Point(4, -4);
@@ -136,41 +148,41 @@ namespace TurtleSharp.WPF
             _turtleRep.Points = myPointCollection;
 
             _turtleRep.RenderTransform = new RotateTransform() { CenterX = PointA.X, CenterY = PointA.Y };
-        });
+        }
 
-        public void RemoveTurtle(Turtle turtle) => Dispatcher.Invoke(() =>
+        public void RemoveTurtle(Turtle turtle) => RunOnUISynchronized(() =>
         {
             //Remove the turtle from the Canvas and set it to null
             this.Children.Remove(_turtleRep);
             _turtleRep = null;
         });
 
-        public void ToggleTurtleVisibility(Turtle turtle)
+        public void ToggleTurtleVisibility(Turtle turtle) => RunOnUISynchronized(() =>
         {
             if (!turtle.IsVisible)
                 this.Children.Remove(_turtleRep);
             else
                 this.Children.Add(_turtleRep);
-        }
+        });
 
-        public void ToggleTurtlePen(Turtle turtle)
+        public void ToggleTurtlePen(Turtle turtle) => RunOnUISynchronized(() =>
         {
             _turtlePen = turtle.PenActive;
-        }
+        });
 
-        public void TurtleBackward(Turtle turtle, double distance)
+        public void TurtleBackward(Turtle turtle, double distance) => RunOnUISynchronized(() =>
         {
             //Just reverse the distance value and call the forward method (smart!!!)
             TurtleForward(turtle, -distance);
             TurtleRotate(turtle, _turtleRotation - 180);
-        }
+        });
 
         public void TurtleCurve(Turtle turtle, double radius, double length)
         {
             throw new NotImplementedException();
         }
 
-        public void TurtleForward(Turtle turtle, double distance)
+        public void TurtleForward(Turtle turtle, double distance) => RunOnUISynchronized(async arg =>
         {
             if (_turtleRep != null)
             {
@@ -209,18 +221,20 @@ namespace TurtleSharp.WPF
 
                 sb.Children.Add(animateX);
                 sb.Children.Add(animateY);
-                //Set a new position for turtle
-                this.RelocateTurtle(turtle, trueLineEndX, trueLineEndY, sb);
-
                 //Show the line
                 if (_turtlePen)
                 {
                     this.Children.Add(line);
                     _lines.Add(line);
                 }
+                //Set a new position for turtle
+                await RelocateTurtleAsync(turtle, trueLineEndX, trueLineEndY, sb);
+
                 //AnimationQueue.Enqueue(sb, line);
             }
-        }
+
+            arg.NotifyCompletion();
+        });
 
         public void TurtleReset(Turtle turtle)
         {
@@ -241,7 +255,7 @@ namespace TurtleSharp.WPF
         }
 
         
-        public void TurtleRotate(Turtle turtle, double degrees) => Dispatcher.Invoke(() =>
+        public void TurtleRotate(Turtle turtle, double degrees) => RunOnUISynchronized(async arg =>
         {
             if (degrees == 0) return;
             //Convert degrees to radiants
@@ -249,29 +263,15 @@ namespace TurtleSharp.WPF
 
             _lineRotation += angle;
 
-            //Save the sin and cos values
-            //double sinVal = Math.Round(Math.Sin(_turtleRotation), 4);
-            //double cosVal = Math.Round(Math.Cos(_turtleRotation), 4);
-
-            //Get the tail coords of the turtle
-            //double xTail = _turtleRep.Points[0].X;
-            //double yTail = _turtleRep.Points[0].Y;
-
-            /*for (int i = 0; i < _turtleRep.Points.Count; i++)
-            {
-                //Create a new Point and insert it in the place of old one
-                Point point = _turtleRep.Points[i];
-
-                point.X = this.newPointX(_turtleRep.Points[i].X, xTail, _turtleRep.Points[i].Y, yTail, sinVal, cosVal);
-                point.Y = this.newPointY(_turtleRep.Points[i].X, xTail, _turtleRep.Points[i].Y, yTail, sinVal, cosVal);
-                _turtleRep.Points[i] = point;
-            }*/
             var turtleTransform = _turtleRep.RenderTransform as RotateTransform;
 
             var rotationAnimation = new DoubleAnimation(_turtleRotation, _turtleRotation - degrees, new Duration(new TimeSpan(0, 0, 1)));
+            
+            await turtleTransform.BeginAnimationAsync(RotateTransform.AngleProperty, rotationAnimation);
 
-            AnimationQueue.Enqueue(rotationAnimation, turtleTransform, RotateTransform.AngleProperty);
             _turtleRotation -= degrees;
+
+            arg.NotifyCompletion();
         });
 
         public void TurtleChangeBrush(Turtle turtle, string color)
@@ -311,14 +311,13 @@ namespace TurtleSharp.WPF
         }
 
         //Method relocating the turtle with new tail's point
-        private void RelocateTurtle(Turtle turtle, double newCenterX, double newCenterY, Storyboard storyboard = null) => Dispatcher.Invoke(() =>
+        private async Task RelocateTurtleAsync(Turtle turtle, double newCenterX, double newCenterY, Storyboard storyboard = null)
         {
             //Set the center point (The coords of the tail)
             var xCenter = newCenterX;
             var yCenter = newCenterY;
 
             var sb = storyboard ?? new Storyboard();
-
             var animationX = new DoubleAnimation(_turtleLeft, xCenter, new Duration(new TimeSpan(0, 0, 1)));
             var animationY = new DoubleAnimation(_turtleTop, yCenter, new Duration(new TimeSpan(0, 0, 1)));
 
@@ -330,13 +329,51 @@ namespace TurtleSharp.WPF
             sb.Children.Add(animationX);
             sb.Children.Add(animationY);
 
-            AnimationQueue.Enqueue(sb);
+            //AnimationQueue.Enqueue(sb);
+
+            if (CancellationToken is null) await sb.BeginAsync();
+            else await sb.BeginAsync((CancellationToken) CancellationToken);
 
             _turtleLeft = xCenter;
             _turtleTop = yCenter;
 
             //Rotate the turtle
-            this.TurtleRotate(turtle, 0);
+            //this.TurtleRotate(turtle, 0);
+        }
+
+        private void RunOnUI(Action action) => Dispatcher.Invoke(() =>
+        {
+            if (CancellationToken != null)
+            {
+                var ct = (CancellationToken)CancellationToken;
+
+                if (!ct.IsCancellationRequested)
+                    Dispatcher.InvokeAsync(action, DispatcherPriority.Normal, ct).Wait();
+
+                ct.ThrowIfCancellationRequested();
+            }
+            else
+            {
+                action.Invoke();
+            }
         });
+
+        private void RunOnUISynchronized(Action action)
+        {
+            if (_queueDispatcher is null) {
+                _queueDispatcher = new SynchronizedDispatcher(Dispatcher);
+                _queueDispatcher.CancellationToken = CancellationToken;
+                }
+            _queueDispatcher.Invoke(action);
+        }
+        private void RunOnUISynchronized(Action<ActionCompletedNotifier> action)
+        {
+            if (_queueDispatcher is null)
+            {
+                _queueDispatcher = new SynchronizedDispatcher(Dispatcher);
+                _queueDispatcher.CancellationToken = CancellationToken;
+            }
+            _queueDispatcher.Invoke(action);
+        }
     }
 }
