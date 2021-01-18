@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Shapes;
 
@@ -6,6 +7,8 @@ namespace Zolwik.Helpers
 {
     public static class SVGConverter
     {
+        static readonly CultureInfo Culture = CultureInfo.CreateSpecificCulture("en-US");
+
         public static string GetSVGCode(List<Line> objects)
         {
             //Define the head of the SVG file
@@ -38,9 +41,9 @@ namespace Zolwik.Helpers
         private static string getSvgLine(double x1, double y1, double x2, double y2, string color, double size)
         {
             return "" +
-                $"<line x1=\"{x1}\" y1=\"{y1}\" " +
-                $"x2=\"{x2}\" y2=\"{y2}\" " +
-                $"stroke=\"{color}\" stroke-width=\"{size}\" />";
+                $"<line x1=\"{x1.ToString(Culture)}\" y1=\"{y1.ToString(Culture)}\" " +
+                $"x2=\"{x2.ToString(Culture)}\" y2=\"{y2.ToString(Culture)}\" " +
+                $"stroke=\"{color}\" stroke-width=\"{size.ToString(Culture)}\" />";
         }
     }
 }
