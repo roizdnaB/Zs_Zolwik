@@ -184,6 +184,12 @@ namespace Zolwik.ViewModels
                 _cts.Dispose();
                 _cts = null;
                 _currentCancellationToken = null;
+
+                _cts = new CancellationTokenSource();
+                _currentCancellationToken = _cts.Token;
+                (_canvas as TurtleCanvas).CancellationToken = _currentCancellationToken;
+
+                _canvas.Clear();
             }
         }
 
@@ -204,12 +210,11 @@ namespace Zolwik.ViewModels
             Run = new RelayCommand(
                 arg =>
                 {
-
-                    _canvas.Clear();
                     _cts = new CancellationTokenSource();
                     _currentCancellationToken = _cts.Token;
-
                     (_canvas as TurtleCanvas).CancellationToken = _currentCancellationToken;
+
+                    _canvas.Clear();
 
                     var task = Task.Run(() =>
                     {

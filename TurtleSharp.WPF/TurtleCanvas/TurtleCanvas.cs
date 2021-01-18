@@ -38,7 +38,7 @@ namespace TurtleSharp.WPF
         //The list required to save file as CVG
         private List<Line> _lines;
 
-        public void Clear() => RunOnUISynchronized(() =>
+        public void Clear() => Dispatcher.Invoke(() =>
         {
             //Clear the Canvas
             this.Children.Clear();
@@ -54,7 +54,7 @@ namespace TurtleSharp.WPF
         });
 
         //Place the turtle on the screen
-        public void PlaceTurtle(Turtle turtle) => RunOnUISynchronized(() =>
+        public void PlaceTurtle(Turtle turtle) => Dispatcher.Invoke(() =>
         {
             _turtleRep = new Polygon();
             _lines = new List<Line>();
@@ -159,10 +159,12 @@ namespace TurtleSharp.WPF
 
         public void ToggleTurtleVisibility(Turtle turtle) => RunOnUISynchronized(() =>
         {
+            if (_turtleRep != null) { 
             if (!turtle.IsVisible)
                 this.Children.Remove(_turtleRep);
             else
                 this.Children.Add(_turtleRep);
+            }
         });
 
         public void ToggleTurtlePen(Turtle turtle) => RunOnUISynchronized(() =>
@@ -267,31 +269,31 @@ namespace TurtleSharp.WPF
 
             var rotationAnimation = new DoubleAnimation(_turtleRotation, _turtleRotation - degrees, new Duration(new TimeSpan(0, 0, 1)));
             
-            await turtleTransform.BeginAnimationAsync(RotateTransform.AngleProperty, rotationAnimation);
+            await turtleTransform.BeginAnimationAsync(RotateTransform.AngleProperty, rotationAnimation, CancellationToken.GetValueOrDefault());
 
             _turtleRotation -= degrees;
 
             arg.NotifyCompletion();
         });
 
-        public void TurtleChangeBrush(Turtle turtle, string color)
-        {
+        public void TurtleChangeBrush(Turtle turtle, string color) => RunOnUISynchronized(() =>
+       {
             //TODO: Change ifs to enums or something
             if (color == "Red")
-                _brushColor = Brushes.Red;
-            else if (color == "Green")
-                _brushColor = Brushes.Green;
-            else if (color == "Yellow")
-                _brushColor = Brushes.Yellow;
-            else if (color == "Blue")
-                _brushColor = Brushes.Blue;
-            else if (color == "Purple")
-                _brushColor = Brushes.Purple;
-            else if (color == "Black")
-                _brushColor = Brushes.Black;
-            else
-                return;
-        }
+               _brushColor = Brushes.Red;
+           else if (color == "Green")
+               _brushColor = Brushes.Green;
+           else if (color == "Yellow")
+               _brushColor = Brushes.Yellow;
+           else if (color == "Blue")
+               _brushColor = Brushes.Blue;
+           else if (color == "Purple")
+               _brushColor = Brushes.Purple;
+           else if (color == "Black")
+               _brushColor = Brushes.Black;
+           else
+               return;
+       });
 
         public void TurtleChangeBrushSize(Turtle turtle, double size)
         {
@@ -331,8 +333,7 @@ namespace TurtleSharp.WPF
 
             //AnimationQueue.Enqueue(sb);
 
-            if (CancellationToken is null) await sb.BeginAsync();
-            else await sb.BeginAsync((CancellationToken) CancellationToken);
+            await sb.BeginAsync(CancellationToken.GetValueOrDefault());
 
             _turtleLeft = xCenter;
             _turtleTop = yCenter;
@@ -360,11 +361,19 @@ namespace TurtleSharp.WPF
 
         private void RunOnUISynchronized(Action action)
         {
-            if (_queueDispatcher is null) {
+            if (_queueDispatcher is null)
+            {
                 _queueDispatcher = new SynchronizedDispatcher(Dispatcher);
                 _queueDispatcher.CancellationToken = CancellationToken;
-                }
-            _queueDispatcher.Invoke(action);
+            }
+            if (!CancellationToken?.IsCancellationRequested ?? true)
+            {
+                _queueDispatcher.Invoke(action);
+            }
+            else
+            {
+                CancellationToken?.ThrowIfCancellationRequested();
+            }
         }
         private void RunOnUISynchronized(Action<ActionCompletedNotifier> action)
         {
@@ -373,7 +382,14 @@ namespace TurtleSharp.WPF
                 _queueDispatcher = new SynchronizedDispatcher(Dispatcher);
                 _queueDispatcher.CancellationToken = CancellationToken;
             }
-            _queueDispatcher.Invoke(action);
+            if (!CancellationToken?.IsCancellationRequested ?? true)
+            {
+                _queueDispatcher.Invoke(action);
+            }
+            else
+            {
+                CancellationToken?.ThrowIfCancellationRequested();
+            }
         }
     }
 }

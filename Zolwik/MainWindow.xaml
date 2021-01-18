@@ -84,12 +84,6 @@
                         <MenuItem Header="{x:Static resx:Resource.to_svg}" Command="{Binding ElementName=SaveImageSVG, Path=Show}" Background="#FF4A7C59"></MenuItem>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="{x:Static resx:Resource.settings}">
-                    <MenuItem Header="{x:Static resx:Resource.background}" Background="#FF4A7C59">
-                        <MenuItem Header="{x:Static resx:Resource._default}" IsCheckable="True" IsChecked="True" x:Name="MenuItem_Default" vm:MenuItemExtensions.GroupName="someGroup" Background="#FF4A7C59"/>
-                        <MenuItem Header="{x:Static resx:Resource.dark}" IsCheckable="True" IsChecked="False" x:Name="MenuItem_Dark" vm:MenuItemExtensions.GroupName="someGroup" Background="#FF4A7C59"/>
-                    </MenuItem>
-                </MenuItem>
                 <MenuItem Header="{x:Static resx:Resource.about}" Command="{Binding About}">
                 </MenuItem>
                 <MenuItem Header="{x:Static resx:Resource.examples}">
@@ -97,10 +91,8 @@
                         <MenuItem Header="{x:Static resx:Resource.forward}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.forward}" Background="#FF4A7C59"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.backward}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.backward}" Background="#FF4A7C59"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.for_plus_rot}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.for_plus_rot}" Background="#FF4A7C59"></MenuItem>
-                        <MenuItem Header="{x:Static resx:Resource.curve}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.curve}" Background="#FF4A7C59"></MenuItem>
-                    </MenuItem>
+                         </MenuItem>
                     <MenuItem Header="{x:Static resx:Resource.shapes}" Background="#FF4A7C59">
-                        <MenuItem Header="{x:Static resx:Resource.circle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.circle}" Background="#FF4A7C59"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.square}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.square}" Background="#FF4A7C59"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.triangle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.triangle}" Background="#FF4A7C59"></MenuItem>
                         <MenuItem Header="{x:Static resx:Resource.rectangle}" Command="{Binding ShowExampleCode}" CommandParameter="{x:Static resx:Resource.rectangle}" Background="#FF4A7C59"></MenuItem>
