@@ -145,24 +145,29 @@ namespace Zolwik.ViewModels
 
         private void _saveTextFromFileCommand()
         {
-            if(PathToSave == null)
+            if (PathToSave == null)
             {
+                var filePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\script";
+
                 var dialogBox = new SaveFileDialogBox()
                 {
                     Name = "SaveFile",
                     Filter = "Text Files txt files (*.txt)|*.txt",
                     DefaultExtension = "txt",
                     FilterIndex = 0,
-                    FilePath = @"C\\",
+                    FilePath = filePath,
                     CommandFileOk = SaveAsTextFromFile
                 };
-                PathToSave = dialogBox.FilePath;
-                
+
+                dialogBox.Show.Execute(null);
+
+                if (dialogBox.FileDialogResult == true)
+                { 
+                    PathToSave = dialogBox.FilePath;
+                }
+
             }
-            else
-            {
-                _saveAsTextFromFileCommand(PathToSave);
-            }
+            _saveAsTextFromFileCommand(PathToSave);
         }
 
         private void _showExampleCode(object fileName)
