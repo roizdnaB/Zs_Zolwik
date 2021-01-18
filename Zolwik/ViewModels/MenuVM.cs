@@ -26,7 +26,9 @@ namespace Zolwik.ViewModels
 
         private string _text = string.Empty;
         private string _path = null;
+        private string _pathToSave = null;
         public string Path { get => _path; set => _path = value; }
+        public string PathToSave { get => _pathToSave; set => _pathToSave = value; }
         private ITurtlePresentation _canvas;
         private CancellationTokenSource _cts;
         private CancellationToken? _currentCancellationToken;
@@ -141,14 +143,26 @@ namespace Zolwik.ViewModels
             Path = FilePath;
         }
 
-        private void _saveTextFromFileCommand(object path)
+        private void _saveTextFromFileCommand()
         {
-            string FilePath = path as string;
-            if (Path == null)
+            if(PathToSave == null)
             {
-                Path = FilePath;
+                var dialogBox = new SaveFileDialogBox()
+                {
+                    Name = "SaveFile",
+                    Filter = "Text Files txt files (*.txt)|*.txt",
+                    DefaultExtension = "txt",
+                    FilterIndex = 0,
+                    FilePath = @"C\\",
+                    CommandFileOk = SaveAsTextFromFile
+                };
+                PathToSave = dialogBox.FilePath;
+                
             }
-            File.WriteAllText(Path, Text);
+            else
+            {
+                _saveAsTextFromFileCommand(PathToSave);
+            }
         }
 
         private void _showExampleCode(object fileName)
@@ -196,7 +210,7 @@ namespace Zolwik.ViewModels
         public MenuVM()
         {
             LoadTextFromFile = new RelayCommand(arg => _loadTextFromFileCommand(arg));
-            SaveTextFromFile = new RelayCommand(arg => _saveTextFromFileCommand(arg));
+            SaveTextFromFile = new RelayCommand(arg => _saveTextFromFileCommand());
             SaveAsTextFromFile = new RelayCommand(arg => _saveAsTextFromFileCommand(arg));
             CopyText = new RelayCommand(arg => _copyTextCommand());
             About = new RelayCommand(arg => _aboutCommand());
@@ -206,6 +220,7 @@ namespace Zolwik.ViewModels
             SaveAsSVG = new RelayCommand(arg => _saveAsSVG(arg));
             SaveAsBTM = new RelayCommand(arg => _saveAsBTM(arg));
             Abort = new RelayCommand(arg => _abortCommand());
+            
 
             Run = new RelayCommand(
                 arg =>

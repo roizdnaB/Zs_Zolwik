@@ -39,7 +39,7 @@
         <db:SaveFileDialogBox
             x:Name="SaveFile"
             Filter="Text Files txt files (*.txt)|*.txt"
-            CommandFileOk="{Binding SaveTextFromFile}"
+            CommandFileOk="{Binding SaveAsTextFromFile}"
             DefaultExtension="txt"
             FilterIndex="0" />
 
@@ -75,7 +75,7 @@
                 <MenuItem Header="{x:Static resx:Resource.script}" Height="30" FontSize="12">
                     <MenuItem Header="{x:Static resx:Resource._new}" Background="#FF4A7C59" />
                     <MenuItem Header="{x:Static resx:Resource.open}" Command ="{Binding ElementName=LoadFile, Path=Show}" Background="#FF4A7C59" />
-                    <MenuItem Header="{x:Static resx:Resource.save}" Command ="{Binding ElementName=SaveFile, Path=Show}" Background="#FF4A7C59" />
+                    <MenuItem Header="{x:Static resx:Resource.save}" Command ="{Binding SaveTextFromFile}" Background="#FF4A7C59" />
                     <MenuItem Header="{x:Static resx:Resource.saveAs}" Command ="{Binding ElementName=SaveFile, Path=Show}" Background="#FF4A7C59" />
                     <MenuItem Header="{x:Static resx:Resource.export}" Background="#FF4A7C59">
                         <MenuItem Header="{x:Static resx:Resource.to_jpg}" Command="{Binding ElementName=SaveImageJPG, Path=Show}" Background="#FF4A7C59"></MenuItem>
