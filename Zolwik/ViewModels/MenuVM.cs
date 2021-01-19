@@ -70,17 +70,17 @@ namespace Zolwik.ViewModels
 
         private CroppedBitmap bitmapHelper()
         {
-            RenderTargetBitmap rtb = new RenderTargetBitmap(500, 500, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+            RenderTargetBitmap rtb = new RenderTargetBitmap(5000, 5000, 96d, 96d, System.Windows.Media.PixelFormats.Default);
             rtb.Render((System.Windows.Media.Visual)_canvas);
 
-            var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+            var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, (int)Math.Ceiling((_canvas as Canvas).ActualWidth), (int)Math.Ceiling((_canvas as Canvas).ActualHeight)));
 
             return crop;
         }
 
         private void _saveAsBTM(object path)
         {
-            _turtle.IsVisible = false;
+           // _turtle.IsVisible = false;
             string FilePath = path as string;
 
             var crop = bitmapHelper();
@@ -92,12 +92,12 @@ namespace Zolwik.ViewModels
             {
                 btmEncoder.Save(fs);
             }
-            _turtle.IsVisible = true;
+          //  _turtle.IsVisible = true;
         }
 
         private void _saveAsJPG(object path)
         {
-            _turtle.IsVisible = false;
+        //    _turtle.IsVisible = false;
             string FilePath = path as string;
             //Nie działa dobrze
             var crop = bitmapHelper();
@@ -110,12 +110,12 @@ namespace Zolwik.ViewModels
                 jpgEncoder.Save(fs);
             }
 
-            _turtle.IsVisible = true;
+          //  _turtle.IsVisible = true;
         }
 
         private void _saveAsPNG(object path)
         {
-            _turtle.IsVisible = false;
+           // _turtle.IsVisible = false;
             string FilePath = path as string;
 
             var crop = bitmapHelper();
