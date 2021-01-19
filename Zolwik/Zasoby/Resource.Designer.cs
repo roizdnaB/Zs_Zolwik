@@ -133,6 +133,15 @@ namespace Zolwik.Zasoby {
         }
         
         /// <summary>
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Clean.
+        /// </summary>
+        public static string clean {
+            get {
+                return ResourceManager.GetString("clean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Wyszukuje zlokalizowany ciąg podobny do ciągu Curve.
         /// </summary>
         public static string curve {

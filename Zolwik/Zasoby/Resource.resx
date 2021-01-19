@@ -135,6 +135,9 @@
   <data name="circle" xml:space="preserve">
     <value>Circle</value>
   </data>
+  <data name="clean" xml:space="preserve">
+    <value>Clean</value>
+  </data>
   <data name="curve" xml:space="preserve">
     <value>Curve</value>
   </data>

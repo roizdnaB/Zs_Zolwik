@@ -132,6 +132,7 @@
             </StackPanel.Resources>
             <Button Content="{x:Static resx:Resource.run}" Command="{Binding Run}"/>
             <Button Content="{x:Static resx:Resource.abort}" Command="{Binding Abort}"/>
+            <Button Content="{x:Static resx:Resource.clean}" Command="{Binding Clean}"/>
         </StackPanel>
     </Grid>
 </Window >

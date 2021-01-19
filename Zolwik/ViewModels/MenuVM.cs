@@ -45,6 +45,7 @@ namespace Zolwik.ViewModels
         public RelayCommand CopyText { get; private set; }
         public ICommand Run { get; private set; }
         public RelayCommand Abort { get; private set; }
+        public RelayCommand Clean { get; private set; }
         public RelayCommand About { get; private set; }
         public RelayCommand ShowExampleCode { get; private set; }
         public RelayCommand SaveAsJPG { get; private set; }
@@ -216,6 +217,11 @@ namespace Zolwik.ViewModels
                 _canvas.Clear();
             }
         }
+        
+        private void _cleanCommand()
+        {
+            
+        }
 
         public MenuVM()
         {
@@ -230,7 +236,7 @@ namespace Zolwik.ViewModels
             SaveAsSVG = new RelayCommand(arg => _saveAsSVG(arg));
             SaveAsBTM = new RelayCommand(arg => _saveAsBTM(arg));
             Abort = new RelayCommand(arg => _abortCommand(), arg => CanvasBusy);
-            
+            Clean = new RelayCommand(arg => _cleanCommand());
 
             Run = new RelayCommand(
                 arg =>
