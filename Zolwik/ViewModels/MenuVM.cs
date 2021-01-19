@@ -249,11 +249,28 @@ namespace Zolwik.ViewModels
 
                     var task = Task.Run(() =>
                     {
-                        CSharpScript.RunAsync(
-                            Text,
-                            globals: new TurtleCanvasPair { Turtle = _turtle, Canvas = TurtlePresentationHook },
-                            globalsType: typeof(TurtleCanvasPair),
-                            options: ScriptOptions.Default.WithEmitDebugInformation(true));
+                        try
+                        {
+                            CSharpScript.RunAsync(
+                                Text,
+                                globals: new TurtleCanvasPair { Turtle = _turtle, Canvas = TurtlePresentationHook },
+                                globalsType: typeof(TurtleCanvasPair),
+                                options: ScriptOptions.Default.WithEmitDebugInformation(true));
+                        }
+                        catch (Exception e)
+                        {
+                            Dispatcher.Invoke(() =>
+                            {
+                                var dialogBox = new MessageDialogBox()
+                                {
+                                    Caption = "Błąd kompilacji",
+                                    Icon = System.Windows.MessageBoxImage.Warning,
+                                    Buttons = System.Windows.MessageBoxButton.OK
+                                };
+                                dialogBox.showMessageBox(e.Message);
+                            });
+                        }
+
                     });
 
                     task.ContinueWith(prev =>
