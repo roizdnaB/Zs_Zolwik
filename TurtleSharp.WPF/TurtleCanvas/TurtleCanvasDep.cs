@@ -54,6 +54,21 @@ namespace TurtleSharp.WPF
 
         #endregion TurtlePresentationHookDefinition
 
+
+        public bool IsBusy
+        {
+            get { return (bool)GetValue(IsBusyProperty); }
+            set { SetValue(IsBusyProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsBusyProperty =
+            DependencyProperty.Register(
+                "IsBusy",
+                typeof(bool),
+                typeof(TurtleCanvas),
+                new PropertyMetadata(false)
+            );
+
         private void MouseWheelCallback(object sender, MouseWheelEventArgs e)
         {
             var rt = RenderTransform as ScaleTransform;

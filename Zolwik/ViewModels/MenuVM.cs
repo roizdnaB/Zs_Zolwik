@@ -31,7 +31,12 @@ namespace Zolwik.ViewModels
         public string PathToSave { get => _pathToSave; set => _pathToSave = value; }
         private ITurtlePresentation _canvas;
         private CancellationTokenSource _cts;
-        private CancellationToken? _currentCancellationToken;
+        private CancellationToken _currentCancellationToken;
+        private bool _canvasBusy;
+        public bool CanvasBusy { get => _canvasBusy; set {
+                _canvasBusy = value;
+                OnPropertyChanged(nameof(CanvasBusy)
+                    ); } } 
         public string Text { get => _text; set { _text = value; OnPropertyChanged(nameof(Text)); } }
         public ITurtlePresentation TurtlePresentationHook { get => _canvas; set { _canvas = value; OnPropertyChanged(nameof(TurtlePresentationHook)); } }
         public RelayCommand LoadTextFromFile { get; private set; }
@@ -174,7 +179,7 @@ namespace Zolwik.ViewModels
         {
             string File = fileName.ToString();
             string FilePath = $"{Environment.GetEnvironmentVariable("AppData")}\\Zolwik\\Examples\\{File}.txt";
-            _canvas.Clear();
+            //_canvas.Clear();
             _loadTextFromFileCommand(FilePath);
         }
 
@@ -202,7 +207,7 @@ namespace Zolwik.ViewModels
                 _cts.Cancel();
                 _cts.Dispose();
                 _cts = null;
-                _currentCancellationToken = null;
+                _currentCancellationToken = CancellationToken.None;
 
                 _cts = new CancellationTokenSource();
                 _currentCancellationToken = _cts.Token;
@@ -224,17 +229,17 @@ namespace Zolwik.ViewModels
             SaveAsPNG = new RelayCommand(arg => _saveAsPNG(arg));
             SaveAsSVG = new RelayCommand(arg => _saveAsSVG(arg));
             SaveAsBTM = new RelayCommand(arg => _saveAsBTM(arg));
-            Abort = new RelayCommand(arg => _abortCommand());
+            Abort = new RelayCommand(arg => _abortCommand(), arg => CanvasBusy);
             
 
             Run = new RelayCommand(
                 arg =>
                 {
+                    CanvasBusy = true;
+
                     _cts = new CancellationTokenSource();
                     _currentCancellationToken = _cts.Token;
                     (_canvas as TurtleCanvas).CancellationToken = _currentCancellationToken;
-
-                    _canvas.Clear();
 
                     var task = Task.Run(() =>
                     {
@@ -290,7 +295,7 @@ namespace Zolwik.ViewModels
                         }
                     }
                 });
-            });
+            }, arg => !CanvasBusy);
         }
     }
 

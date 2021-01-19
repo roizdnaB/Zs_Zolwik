@@ -23,19 +23,41 @@ namespace TurtleSharp.WPF
         private double _turtleLeft = 0;
         private double _turtleTop = 0;
         private bool _turtlePen = true;
-        private CancellationToken? _cancellationToken;
+        private CancellationToken _cancellationToken;
         private SynchronizedDispatcher _queueDispatcher;
+        private SynchronizedDispatcher QueueDispatcher
+        {
+            get
+            {
+                if (_queueDispatcher is null)
+                {
+                    _queueDispatcher = new SynchronizedDispatcher(Dispatcher);
+                    _queueDispatcher.CancellationToken = CancellationToken;
+                    _queueDispatcher.QueueEmptied += delegate {
+                        IsBusy = false;
+                    };
+                }
+                return _queueDispatcher;
+            }
+        }
 
         //The list required to save file as CVG
         private List<Line> _lines;
 
-        public CancellationToken? CancellationToken {
+        public CancellationToken CancellationToken {
             get => _cancellationToken;
             set
             {
                 _cancellationToken = value;
-                _cancellationToken?.Register(_clear);
-                if (_queueDispatcher != null) _queueDispatcher.CancellationToken = value;
+                _cancellationToken.Register(() =>
+                {
+                    _clear();
+                    Dispatcher.Invoke(() =>
+                    {
+                        IsBusy = false;
+                    });
+                });
+                if (QueueDispatcher != null) QueueDispatcher.CancellationToken = value;
             }
         }
 
@@ -91,7 +113,7 @@ namespace TurtleSharp.WPF
 
             var rotationAnimation = new DoubleAnimation(_turtleRotation, _turtleRotation - degrees, new Duration(new TimeSpan(0, 0, 1)));
 
-            await turtleTransform.BeginAnimationAsync(RotateTransform.AngleProperty, rotationAnimation, CancellationToken.GetValueOrDefault());
+            await turtleTransform.BeginAnimationAsync(RotateTransform.AngleProperty, rotationAnimation, CancellationToken);
 
             _turtleRotation -= degrees;
         }
@@ -129,34 +151,24 @@ namespace TurtleSharp.WPF
         });
         private void RunOnUISynchronized(Action action)
         {
-            if (_queueDispatcher is null)
+            if (!CancellationToken.IsCancellationRequested)
             {
-                _queueDispatcher = new SynchronizedDispatcher(Dispatcher);
-                _queueDispatcher.CancellationToken = CancellationToken;
-            }
-            if (!CancellationToken?.IsCancellationRequested ?? true)
-            {
-                _queueDispatcher.Invoke(action);
+                QueueDispatcher.Invoke(action);
             }
             else
             {
-                CancellationToken?.ThrowIfCancellationRequested();
+                CancellationToken.ThrowIfCancellationRequested();
             }
         }
         private void RunOnUISynchronized(Action<ActionCompletedNotifier> action)
         {
-            if (_queueDispatcher is null)
+            if (!CancellationToken.IsCancellationRequested)
             {
-                _queueDispatcher = new SynchronizedDispatcher(Dispatcher);
-                _queueDispatcher.CancellationToken = CancellationToken;
-            }
-            if (!CancellationToken?.IsCancellationRequested ?? true)
-            {
-                _queueDispatcher.Invoke(action);
+                QueueDispatcher.Invoke(action);
             }
             else
             {
-                CancellationToken?.ThrowIfCancellationRequested();
+                CancellationToken.ThrowIfCancellationRequested();
             }
         }
     }

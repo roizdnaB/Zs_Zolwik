@@ -233,7 +233,7 @@ namespace TurtleSharp.WPF
 
             //AnimationQueue.Enqueue(sb);
 
-            await sb.BeginAsync(CancellationToken.GetValueOrDefault());
+            await sb.BeginAsync(CancellationToken);
 
             _turtleLeft = xCenter;
             _turtleTop = yCenter;

@@ -12,14 +12,17 @@ namespace TurtleSharp.WPF.Helpers
         private Dispatcher _dispatcher;
         private Queue<Action> _queue = new Queue<Action>();
 
+        public event EventHandler QueueEmptied;
+
         private object _syncRoot = new object();
 
 
-        private CancellationToken? _cancellationToken;
+        private CancellationToken _cancellationToken;
         public bool Waiting { get; private set; }
-        public CancellationToken? CancellationToken { get { return _cancellationToken; } set {
+        public bool IsEmpty => _queue.Count == 0;
+        public CancellationToken CancellationToken { get { return _cancellationToken; } set {
                 _cancellationToken = value;
-                _cancellationToken?.Register(() => {
+                _cancellationToken.Register(() => {
                     _queue.Clear();
                     Waiting = false;
                     }
@@ -34,11 +37,10 @@ namespace TurtleSharp.WPF.Helpers
         public void Invoke(Action action)
         {
             CheckCancellationRequested();
-            if (CancellationToken?.IsCancellationRequested ?? false) return;
+            if (CancellationToken.IsCancellationRequested) return;
             Action dispatcherAction = () =>
             {
-                var operation = (_cancellationToken is null) ? _dispatcher.InvokeAsync(action, DispatcherPriority.Normal)
-                : _dispatcher.InvokeAsync(action, DispatcherPriority.Normal, (CancellationToken)_cancellationToken);
+                var operation = _dispatcher.InvokeAsync(action, DispatcherPriority.Normal, _cancellationToken);
                 operation.Completed += delegate
                 {
                     TryDispatchNext();
@@ -54,7 +56,7 @@ namespace TurtleSharp.WPF.Helpers
         public void Invoke(Action<ActionCompletedNotifier> action)
         {
             CheckCancellationRequested();
-            if (CancellationToken?.IsCancellationRequested ?? false) return;
+            if (CancellationToken.IsCancellationRequested) return;
 
             Action innerAction = () =>
             {
@@ -64,10 +66,7 @@ namespace TurtleSharp.WPF.Helpers
             };
 
             Action dispatcherInvocation = () =>
-            {
-                if (_cancellationToken is null) _dispatcher.InvokeAsync(innerAction, DispatcherPriority.Normal);
-                else _dispatcher.InvokeAsync(innerAction, DispatcherPriority.Normal, (CancellationToken)_cancellationToken);
-            };
+                _dispatcher.InvokeAsync(innerAction, DispatcherPriority.Normal, _cancellationToken);
 
             lock (_syncRoot)
             {
@@ -98,15 +97,15 @@ namespace TurtleSharp.WPF.Helpers
             else
             {
                 Waiting = false;
+                QueueEmptied.Invoke(this, null);
             }
         }
 
         private void CheckCancellationRequested()
         {
-            if (_cancellationToken?.IsCancellationRequested ?? false)
+            if (_cancellationToken.IsCancellationRequested)
             {
                 _queue.Clear();
-            //    _cancellationToken?.ThrowIfCancellationRequested();
             }
         }
     }
