@@ -217,10 +217,10 @@ namespace Zolwik.ViewModels
                 _canvas.Clear();
             }
         }
-        
+
         private void _cleanCommand()
         {
-            
+            TurtlePresentationHook.Clear();
         }
 
         public MenuVM()
@@ -236,7 +236,7 @@ namespace Zolwik.ViewModels
             SaveAsSVG = new RelayCommand(arg => _saveAsSVG(arg));
             SaveAsBTM = new RelayCommand(arg => _saveAsBTM(arg));
             Abort = new RelayCommand(arg => _abortCommand(), arg => CanvasBusy);
-            Clean = new RelayCommand(arg => _cleanCommand());
+            Clean = new RelayCommand(arg => _cleanCommand(), arg => !CanvasBusy);
 
             Run = new RelayCommand(
                 arg =>
