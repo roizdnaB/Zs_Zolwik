@@ -269,6 +269,7 @@ namespace Zolwik.ViewModels
                                 };
                                 dialogBox.showMessageBox(e.Message);
                             });
+                            CanvasBusy = false;
                         }
 
                     });
@@ -316,6 +317,7 @@ namespace Zolwik.ViewModels
                                 dialogBox.showMessageBox(e.Message);
                             });
                         }
+                        CanvasBusy = false;
                     }
                 });
             }, arg => !CanvasBusy);
