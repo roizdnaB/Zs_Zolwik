@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Zolwik.ViewModels
+namespace MVVM.Extensions
 {
     public class MenuItemExtensions : DependencyObject
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Zolwik
+namespace MVVM
 {
     /// <summary>
     /// Interaction logic for App.xaml

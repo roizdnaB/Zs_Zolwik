@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using Zolwik.ViewModels;
+using MVVM.Commands;
 
-namespace Zolwik.DialogBoxes
+namespace MVVM.DialogBoxes
 {
     // Publiczna klasa abstrakcyjna, będąca klasą bazową dla okien dialogowych
     // Dziedziczy po klasie FrameworkElement i implementuje interfejs INotifyPropertyChanged

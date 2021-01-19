@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace Zolwik.DialogBoxes
+namespace MVVM.DialogBoxes
 {
-    internal class MessageDialogBox : CommandDialogBox
+    public class MessageDialogBox : CommandDialogBox
     {
         #region Własności zależności i ich rejestracje
 

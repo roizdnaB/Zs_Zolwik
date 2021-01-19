@@ -7,20 +7,20 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using TurtleSharp;
-using Zolwik.Compiler;
 using System.Linq;
-using Zolwik.DialogBoxes;
+using MVVM.DialogBoxes;
 using System.Windows.Shapes;
-using Zolwik.Helpers;
 using System.Threading.Tasks;
 using System.Threading;
 using TurtleSharp.WPF;
 using System.Windows.Input;
 using System.Windows.Threading;
+using MVVM.Commands;
+using Zolwik.Helpers;
 
 namespace Zolwik.ViewModels
 {
-    internal class MenuVM : ViewModelBase
+    internal class MainWindowVM : ViewModelBase
     {
         private Turtle _turtle = new Turtle();
 
@@ -223,7 +223,7 @@ namespace Zolwik.ViewModels
             TurtlePresentationHook.Clear();
         }
 
-        public MenuVM()
+        public MainWindowVM()
         {
             LoadTextFromFile = new RelayCommand(arg => _loadTextFromFileCommand(arg));
             SaveTextFromFile = new RelayCommand(arg => _saveTextFromFileCommand());

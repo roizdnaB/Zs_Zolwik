@@ -1,6 +1,6 @@
 using Xunit;
 using Xunit.Abstractions;
-using Zolwik.Compiler;
+using MVVM.Compiler;
 
 namespace TurtleTests
 {

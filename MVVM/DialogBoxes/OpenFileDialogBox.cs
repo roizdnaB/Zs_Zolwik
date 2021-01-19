@@ -1,4 +1,4 @@
-﻿namespace Zolwik.DialogBoxes
+﻿namespace MVVM.DialogBoxes
 {
     public class OpenFileDialogBox : FileDialogBox
     {

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace Zolwik.DialogBoxes
+namespace MVVM.DialogBoxes
 {
     public abstract class FileDialogBox : CommandDialogBox
     {
